@@ -38,7 +38,7 @@ module.exports = {
                   );
                 } else {
                   await Customer.cancelAndClearOrders(msg.senderNumber).then(
-                    ({ status, orderId, data }) => {
+                    ({ status, orderId }) => {
                       if (status === "failed") {
                         return msg.reply(commonMessage("errorMessage"));
                       }

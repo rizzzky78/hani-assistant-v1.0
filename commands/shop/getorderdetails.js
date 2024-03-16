@@ -1,5 +1,6 @@
 const { commonMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
+const { CustomerInterface } = require("@function/distributor-data");
 const { Tools } = require("@function/tools");
 const logger = require("@libs/utils/logger");
 
@@ -17,7 +18,9 @@ module.exports = {
   callback: async ({ client, msg, args }) => {
     const [invoiceId] = Tools.arrayModifier("u", args);
     if (!invoiceId) {
-      return msg.reply("Silahkan masukan ID Invoice pemesanan.");
+      return msg.reply(
+        commonMessage("invalid_QueryAccessOrderDetailsInvoiceId")
+      );
     }
     client
       .sendMessage(msg.from, {
@@ -34,36 +37,17 @@ module.exports = {
                   const [orderData, paymentData, approvalData] = orderDetails;
                   client
                     .sendMessage(msg.from, {
-                      text: JSON.stringify(
-                        { message: "Order Data", data: orderData },
-                        null,
-                        2
-                      ),
+                      text: CustomerInterface.mapCustomerOrderDetails({
+                        orders: orderData,
+                      }),
                     })
                     .then(
                       setTimeout(() => {
-                        client
-                          .sendMessage(msg.from, {
-                            text: JSON.stringify(
-                              { message: "Payment Data", data: paymentData },
-                              null,
-                              2
-                            ),
-                          })
-                          .then(
-                            setTimeout(() => {
-                              return client.sendMessage(msg.from, {
-                                text: JSON.stringify(
-                                  {
-                                    message: "Approval Data",
-                                    data: approvalData,
-                                  },
-                                  null,
-                                  2
-                                ),
-                              });
-                            }, 3000)
-                          );
+                        return client.sendMessage(msg.from, {
+                          text: CustomerInterface.mapCustomerPaymentProof({
+                            payments: paymentData,
+                          }),
+                        });
                       }, 3000)
                     );
                 }

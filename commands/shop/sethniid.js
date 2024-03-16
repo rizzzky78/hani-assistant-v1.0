@@ -39,7 +39,7 @@ module.exports = {
                   return msg.reply(commonMessage("errorMessage"));
                 }
                 return msg.reply(
-                  commonMessage("notification_SuccessAddedHniId")
+                  commonMessage("notification_SuccessAddedHniId")(hniId)
                 );
               }
             );

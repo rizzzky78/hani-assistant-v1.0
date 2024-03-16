@@ -82,9 +82,9 @@ async function MessageHandler(client, { messages, type }) {
     commands.find((v) => v?.aliases && v?.aliases?.includes(command));
 
   if (!getCommand) {
+    if (msg.isGroup) return;
     const statusUser = Tools.checkUser(msg.senderNumber);
     if (!statusUser) {
-      if (msg.isGroup) return;
       return msg.reply(commonMessage("greetNewUser")(msg.pushName));
     }
     return;
@@ -180,7 +180,7 @@ async function MessageHandler(client, { messages, type }) {
       msg,
       command,
       args,
-      fullArgs
+      fullArgs,
     });
   }
 }

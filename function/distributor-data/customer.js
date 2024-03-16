@@ -471,6 +471,45 @@ class CustomerInterface {
 
   /**
    *
+   * @param { { approvals: import("@interface/order-data").ApprovalOrderData } } param0
+   */
+  static mapCustomerApprovalData({ approvals }) {}
+
+  /**
+   *
+   * @param { { payments: import("@interface/payment").CustomerPaymentProof } } param0
+   */
+  static mapCustomerPaymentProof({ payments }) {
+    const {
+      isVerified,
+      timeStamp,
+      metadata: { orderId, transactionId },
+      payer: { tagName, phoneNumber },
+      payment: { via, nominal },
+    } = payments;
+    const verifyStatus = isVerified
+      ? `*Sudah Diverifikasi*`
+      : `*Belum Diverifikasi*`;
+    const captionPayment =
+      `*Bukti Pembayaran*\n\n` +
+      `--------- *Detail*\n` +
+      `ID Pemesanan: *${orderId}*\n` +
+      `ID Transaksi: *${transactionId}*\n` +
+      `Waktu Pembayaran: *${timeStamp} WIB*\n` +
+      `Status Verifikasi: ${verifyStatus}\n\n` +
+      `--------- *Dibayar Oleh*\n` +
+      `Nama: *${tagName}*\n` +
+      `No. Telp: ${phoneNumber}\n\n` +
+      `--------- *Pembayaran*\n` +
+      `Dibayar via: *${via}*\n` +
+      `Nominal Pembayaran: *${Tools.localePrice(nominal)}*\n` +
+      `Bukti Bayar/Transfer: *Lihat pada gambar*\n\n` +
+      `> -akhir pesan-`;
+    return captionPayment;
+  }
+
+  /**
+   *
    * @param { { orders: import("@interface/order-data").CustomerOrderData } } dto
    */
   static mapPaymentProvider({ orders }) {
@@ -520,7 +559,7 @@ class CustomerInterface {
    *
    * @param { { payments: import("@interface/payment").CustomerPaymentProof } } param0
    */
-  static mapCustomerPaymentProof({ payments }) {
+  static mapForwardedCustomerPaymentProof({ payments }) {
     const {
       timeStamp,
       metadata: { orderId, transactionId },

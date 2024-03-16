@@ -1,10 +1,11 @@
 const { commonMessage, moderationMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
-const { Validation } = require("@function/tools");
+const { Validation, Tools } = require("@function/tools");
 const logger = require("@libs/utils/logger");
 const {
   metadata: { superAdmin, adminData },
 } = require("@config/settings");
+const { AdminInterface } = require("@function/distributor-data");
 
 /**
  * @memberof Admin
@@ -26,7 +27,8 @@ module.exports = {
     if (!isAdmin) {
       return msg.reply(commonMessage("unauthorizedForAdminOnly"));
     } else {
-      if (!args || args.length !== 1) {
+      const [orderId] = Tools.arrayModifier("u", args);
+      if (!orderId) {
         return msg.reply(moderationMessage("invalid_QueryOrderIdInput"));
       } else {
         client
@@ -34,7 +36,6 @@ module.exports = {
             text: commonMessage("waitMessage"),
           })
           .then(async () => {
-            const [orderId] = args;
             await Moderation.validateCustomerOrder(orderId)
               .then(async (isValidOrderId) => {
                 if (!isValidOrderId) {
@@ -43,9 +44,9 @@ module.exports = {
                   );
                 }
                 await Moderation.getCustomerOrder(orderId).then(
-                  async (orderData) => {
+                  async (orders) => {
                     return client.sendMessage(msg.from, {
-                      text: JSON.stringify(orderData, null, 2),
+                      text: AdminInterface.mapCustomerOrderData({ orders }),
                     });
                   }
                 );

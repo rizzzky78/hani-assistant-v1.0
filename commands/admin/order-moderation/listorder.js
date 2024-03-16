@@ -10,7 +10,7 @@ const {
  * @type { import('@libs/builders/command').ICommand }
  */
 module.exports = {
-  aliases: ["listorder"],
+  aliases: ["list-pesanan"],
   category: "admin",
   permission: "admin",
   typeArgs: "none",

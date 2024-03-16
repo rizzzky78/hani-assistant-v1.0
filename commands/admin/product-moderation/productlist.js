@@ -11,7 +11,7 @@ const {
  * @type { import('@libs/builders/command').ICommand }
  */
 module.exports = {
-  aliases: ["listproduk"],
+  aliases: ["list-produk"],
   category: "admin",
   permission: "admin",
   typeArgs: "none",

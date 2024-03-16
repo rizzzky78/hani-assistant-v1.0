@@ -15828,5 +15828,16 @@
       "cmd": "invoice",
       "args": "nvoice Pemesanan\n---- Data Pemesanan\nID Pemesanan: ORD-ID-82EFE6C8\nID Transaksi: TRX-ID-B515987\n---- Form Admin\nNomor Resi: JNE12345678910\nCatatan: Ini contoh Invoice yang dikirim oleh Admin sbg bukti pemesanan yang sah."
     }
+  },
+  {
+    "level": "cmd",
+    "pid": "daff573754e175b",
+    "timeStamp": "2024-03-16T08:11:18.735Z",
+    "logs": {
+      "id": "6281230239662",
+      "username": "ios",
+      "cmd": "beli",
+      "args": "eli pas event aspirant phase 2 aja is"
+    }
   }
 ]

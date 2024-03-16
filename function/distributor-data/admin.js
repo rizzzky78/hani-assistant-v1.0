@@ -36,6 +36,21 @@ class AdminInterface {
 
   /**
    *
+   * @param { import("@interface/order-data").StatusOrder } statusOrder
+   */
+  static mapStatusOrder(statusOrder) {
+    const v = {
+      ["never-order"]: `Pelanggan belum pernah melakukan pemesanan.`,
+      ["pending"]: `Menunggu konfirmasi ulang, untuk diterukan ke Admin.`,
+      ["forwarded"]: `Pemesanan Sudah diterukan ke Admin untuk disiapkan, menuggu Pelanggan melakukan pembayaran.`,
+      ["confirmed"]: `Pemesanan dan pembayaran sudah dikonfirmasi oleh Admin.`,
+      ["completed"]: `Pemesanan berstatus selesai.`,
+    };
+    return v[statusOrder];
+  }
+
+  /**
+   *
    * @param { import("@interface/product").Product } product
    */
   static mapEditForms(product) {
@@ -73,45 +88,113 @@ class AdminInterface {
 
   /**
    *
-   * @param { import("@interface/distributor-data").ConfirmationFormDto } dto
+   * @param { { orders: import("@interface/order-data").CustomerOrderData } } dto
    */
-  static makeConfirmationForm({
-    orderId,
-    hniId,
-    products,
-    totalItems,
-    totalPrice,
-    totalPoin,
-    recipient,
-    fullAddress,
-  }) {
-    const buckets = products
-      .map((v) => `${v.productName} (${v.qtyAmount})`)
-      .join(", ");
-    const custAddress = fullAddress.map((v) => `${v}`).join(", ");
-    const [name, phone, recipHniId] = recipient;
-    const forms =
-      `Konfirmasi Pemesanan Customer\n` +
-      `Order ID: ${orderId}\nHNI ID: ${hniId ? hniId : "-"}` +
-      `\n----\n` +
-      `Produk: ${buckets}\n` +
-      `Total Item: ${totalItems}\n` +
-      `Total Harga: ${totalPrice}\n` +
-      `Total Poin: ${totalPoin}` +
-      `\n----\n` +
-      `Nama Penerima: ${name}\n` +
-      `Nomor Telepon: ${phone}\n` +
-      `HNI ID Penerima: ${recipHniId}` +
-      `\n----\n` +
-      `Alamat Lengkap: ${custAddress}` +
-      `\n----\n` +
-      `Berat Paket: (berat paket dalam gram)\n` +
-      `Biaya Ekspedisi: (biaya pengiriman)` +
-      `\n----\n` +
-      `Total Yang Harus Dibayar: (total harga + biaya kirim)` +
-      `\n----\n` +
-      `Catatan: (catatan, opsional)`;
-    return forms;
+  static mapCustomerOrderData({ orders }) {
+    const {
+      status,
+      data: {
+        orderId,
+        timeStamp,
+        data: {
+          buckets,
+          totalItem,
+          totalPoin,
+          totalPrice,
+          totalWeight,
+          totalExactPrice,
+          orderer: [ordrName, ordrPhone, ordrHniId],
+          expedition: { service, description, fees, etd },
+          recipient: {
+            metadata: [recName, recPhone, recHniId],
+            fullAddress,
+          },
+        },
+      },
+    } = orders;
+
+    const val = {
+      products: buckets
+        .map((v, i) => {
+          const { productName, price, qtyAmount } = v;
+          const prices = price.toLocaleString("id-ID");
+          const c = `- *${productName}* (${qtyAmount} pcs)\nHrg/pcs: Rp.${prices},-`;
+          return c;
+        })
+        .join("\n\n"),
+      weights: RajaOngkir.weightConverter({ value: totalWeight, parse: true }),
+      address: fullAddress.join(", "),
+      pricesProduct: totalPrice.toLocaleString("id-ID"),
+      fullPrice: totalExactPrice.toLocaleString("id-ID"),
+    };
+    const [prov, district, subDist, postalCode] = fullAddress;
+
+    const caption =
+      `--------- *Pemesanan*\n\n` +
+      `ID Pemesanan: *${orderId}*\n` +
+      `Waktu Dipesan: *${timeStamp}*\n` +
+      `Status: *${this.mapStatusOrder(status)}*\n\n` +
+      `--------- *Detail Pemesanan*\n` +
+      `---- *Pemesan*\n` +
+      `Nama: *${ordrName}*\n` +
+      `No. telp: *${ordrPhone}*\n` +
+      `HNI ID: *${ordrHniId}*\n\n` +
+      `---- *Penerima*\n` +
+      `Nama: *${recName}*\n` +
+      `No. telp: *${recPhone}*\n` +
+      `HNI ID: *${recHniId ? recHniId : "-"}*\n` +
+      `Alamat Lengkap: *${val.address}*\n\n` +
+      `---- *List Produk Yang Dipesan*\n` +
+      `${val.products}\n\n` +
+      `---- *Ekspedisi*\n` +
+      `Kurir: *JNE*\n` +
+      `Service: *${service} - ${description}*\n` +
+      `Total Estimasi Berat Produk: *${val.weights}kg*\n` +
+      `Tujuan Kota/Kabupaten: *${district}*\n` +
+      `Kode Pos: *${postalCode}*\n` +
+      `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n` +
+      `Estimasi Sampai: *${etd} hari*\n\n` +
+      `--------- *Rekapitulasi Pemesanan*\n` +
+      `Total Item: *${totalItem} item*\n` +
+      `Total Poin: *${totalPoin} poin*\n` +
+      `Total Harga Keseluruhan Produk: *Rp.${val.pricesProduct},-*\n` +
+      `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n` +
+      `Total Keseluruhan: *Rp.${val.fullPrice}*,-\n\n` +
+      `> -akhir pesan-`;
+    return caption;
+  }
+
+  /**
+   *
+   * @param { { payments: import("@interface/payment").CustomerPaymentProof } } param0
+   */
+  static mapCustomerPaymentProof({ payments }) {
+    const {
+      isVerified,
+      timeStamp,
+      metadata: { orderId, transactionId },
+      payer: { tagName, phoneNumber },
+      payment: { via, nominal },
+    } = payments;
+    const verifyStatus = isVerified
+      ? `*Sudah Diverifikasi*`
+      : `*Belum Diverifikasi*`;
+    const captionPayment =
+      `*Bukti Pembayaran Dari Pelanggan*\n\n` +
+      `--------- *Detail*\n` +
+      `ID Pemesanan: *${orderId}*\n` +
+      `ID Transaksi: *${transactionId}*\n` +
+      `Waktu Pembayaran: *${timeStamp} WIB*\n` +
+      `Status Verifikasi: ${verifyStatus}\n\n` +
+      `--------- *Dibayar Oleh*\n` +
+      `Nama: *${tagName}*\n` +
+      `No. Telp: ${phoneNumber}\n\n` +
+      `--------- *Pembayaran*\n` +
+      `Dibayar via: *${via}*\n` +
+      `Nominal Pembayaran: *${Tools.localePrice(nominal)}*\n` +
+      `Bukti Bayar/Transfer: *Lihat pada gambar*\n\n` +
+      `> -akhir pesan-`;
+    return captionPayment;
   }
 
   /**
@@ -146,8 +229,7 @@ class AdminInterface {
         .map((v, i) => {
           const { productName, price, qtyAmount } = v;
           const prices = price.toLocaleString("id-ID");
-          const idx = i + 1;
-          const c = `${idx} - *${productName}* (${qtyAmount} pcs)\nHrg/pcs: Rp.${prices},-`;
+          const c = `- *${productName}* (${qtyAmount} pcs)\nHrg/pcs: Rp.${prices},-`;
           return c;
         })
         .join("\n\n"),
@@ -197,7 +279,7 @@ class AdminInterface {
    *
    * @param { { payments: import("@interface/payment").CustomerPaymentProof, orders: import("@interface/order-data").CustomerOrderData } } param0
    */
-  static mapCustomerPaymentProof({ payments, orders }) {
+  static mapForwardedCustomerPaymentProofDetails({ payments, orders }) {
     const {
       timeStamp,
       metadata: { transactionId },
@@ -292,7 +374,7 @@ class AdminInterface {
       `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n` +
       `Total Keseluruhan: *Rp.${val.fullPrice}*,-\n\n` +
       `> *Catatan*\n` +
-      `> Mohon sesuaikan pesanan dengan data yang tercantum.\nSetelah menggunakan kode perintah *terima-pesanan*, maka Admin wajib mengisikan dan mengirimkan Form Invoice secara lengkap. ` +
+      `> Mohon sesuaikan pesanan dengan data yang tercantum.\n> Setelah menggunakan kode perintah *terima-pesanan*, maka Admin wajib mengisikan dan mengirimkan Form Invoice secara lengkap. ` +
       `Invoice nantinya akan diteruskan kepada pihak pemesan.`;
     return { captionPayment, captionOrder };
   }

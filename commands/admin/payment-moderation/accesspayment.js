@@ -1,8 +1,11 @@
 const { commonMessage, moderationMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
+const { AdminInterface } = require("@function/distributor-data");
 const { Validation, Tools } = require("@function/tools");
 const logger = require("@libs/utils/logger");
-const { superAdmin, adminData } = require("@config/settings").metadata;
+const {
+  metadata: { superAdmin, adminData },
+} = require("@config/settings");
 
 /**
  * @memberof Admin
@@ -43,9 +46,11 @@ module.exports = {
                   );
                 }
                 await Moderation.getCustomerPaymentProof(transactionId).then(
-                  (custPaymentProof) => {
+                  (payments) => {
                     return client.sendMessage(msg.from, {
-                      text: JSON.stringify(custPaymentProof, null, 2),
+                      text: AdminInterface.mapCustomerPaymentProof({
+                        payments,
+                      }),
                     });
                   }
                 );

@@ -5,7 +5,7 @@ const { cmdModules } = require("@libs/constants/command");
  * @type { import('@libs/builders/command').ICommand }
  */
 module.exports = {
-  aliases: ["bantuan", "menu", "help"],
+  aliases: ["deprecated"],
   category: "general",
   description: `Fitur pembantu Admin/Customer dalam menggunakan Chatbot.`,
   callback: async ({ msg, client, args, prefix }) => {

@@ -3,7 +3,9 @@ const { Moderation } = require("@controllers/admin");
 const { AdminInterface } = require("@function/distributor-data");
 const { Validation, Tools, Converter } = require("@function/tools");
 const logger = require("@libs/utils/logger");
-const { superAdmin, adminData } = require("@config/settings").metadata;
+const {
+  metadata: { superAdmin, adminData },
+} = require("@config/settings");
 
 /**
  * @memberof Admin
@@ -19,9 +21,6 @@ module.exports = {
   description: `Mengupload atau Mengedit data produk berdasarkan Forms yang dikirim.`,
   callback: async ({ msg, client, args, fullArgs }) => {
     const [selection] = Tools.arrayModifier("n", args);
-    console.log(selection);
-    console.log(fullArgs);
-
     const isAdmin = Validation.validateAdmin(msg.senderNumber, {
       superAdmin,
       adminData,
@@ -138,7 +137,7 @@ module.exports = {
                     description: data.description,
                     // ...data,
                     image: bufferImage,
-                  }).then(({ status, data: callback }) => {
+                  }).then(({ status }) => {
                     if (!status) {
                       return msg.reply(commonMessage("errorMessage"));
                     }

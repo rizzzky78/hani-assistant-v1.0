@@ -39,7 +39,7 @@ module.exports = {
             document: readFileSync("./assets/pdf/main-catalogue.pdf"),
             fileName: `Katalog Produk HNI HPAI`,
             mimetype: "application/pdf",
-            caption: `*Katalog Produk*\nKamu bisa membuka katalog PDF terlampir atau\n\nKetik "cari <nama produk>" untuk menampilkan informasi lengkap produk\nKetik "pesan <nama produk> # <jumlah>" untuk menambahkan ke keranjang pemesanan.\n\n*Tutorial*\nJika Kamu masih bingung, ketik "tutorial" untuk melihat tata cara pemesanan.\n\n_Halal Mart BC Cilacap 3_\n_copyright@2024_`,
+            caption: commonMessage("acessCatalogue"),
           });
         } else {
           await Moderation.getProductByCategory(category)

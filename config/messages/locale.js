@@ -1,3 +1,5 @@
+const { Tools } = require("@function/tools");
+
 const commonCustomerRegularMessage = {
   waitMessage: `_Mohon tunggu sebentar..._`,
   errorMessage: `_Maaf, sepertinya terjadi error : (. Harap coba lagi dalam beberapa saat._
@@ -15,6 +17,16 @@ Jika kamu perlu informasi lengkap mengenai chatbot silahkan ketik *bantuan*
 > -akhir pesan-`,
   unauthorizedForAdminOnly: `Kode perintah ini hanya dapat digunakan oleh Admin Chatbot.
 > -akhir pesan-`,
+  acessCatalogue: `*Katalog Produk*\nKamu bisa membuka katalog PDF terlampir atau
+  
+- Ketik "*cari <nama produk>*" untuk menampilkan informasi lengkap produk, contoh: "*cari MHS*"
+- Ketik "*pesan <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*pesan sarkum # 3*"
+  
+*Tutorial*
+Jika Kamu masih bingung, ketik "tutorial" untuk melihat tata cara pemesanan.
+  
+> _Halal Mart BC Cilacap 3_
+> _copyright@2024_`,
 
   prompt_FillCheckoutOrderForms: `Silahkan isikan secara lengkap dan kirimkan ulang form pemesanan berikut setelah pesan ini. Harap tidak mengubah bentuk/format form pemesanan.`,
   prompt_SentPaymentCode: `Silahkan salin kode bayar, sesuaikan platform pembayaran yang digunakan, dan kirimkan gambar/bukti bayar/transfer dengan caption tersebut, setelah pesan ini.`,
@@ -24,6 +36,7 @@ Jika kamu perlu informasi lengkap mengenai chatbot silahkan ketik *bantuan*
   /* invalid message */
 
   // products/catalog
+  invalid_QueryAccessOrderDetailsInvoiceId: `Silahkan masukan ID Invoice Pemesanan.`,
   invalid_QueryHniIdInput: `Silahkan masukan HNI ID Kamu, contoh: *hniid <HNI ID>*
 Contoh lain: *hniid 12345678*
 > -akhir pesan-`,
@@ -149,6 +162,13 @@ Untuk memeriksa apakah data kota tersebut terdaftar atau tidak.
 Silahkan tunggu hingga Admin memverifikasi pemesanan dan bukti bayar Kamu. Invoice akan dikirimkan secara otomatis setelah proses verifikasi berhasil dilakukan.
 > -akhir pesan-`,
 
+  /** @param { string } title @param { string } memPrice @param { number } stock @param { number } sold @param { number } poin */
+  notification_DisplayShowcasedProduct: (title, memPrice, stock, sold, poin) =>
+    `\n*${title}*
+Harga/pcs: Rp.${Tools.localePrice(memPrice)}
+Stok: ${stock}
+Terjual: ${sold} pcs
+Poin perolehan/pcs: ${poin}`,
   /** @param { string } hniId */
   notification_SuccessAddedHniId: (hniId) =>
     `Sukses menambahkan *HNI ID ${hniId}*.

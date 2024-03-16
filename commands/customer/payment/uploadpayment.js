@@ -5,15 +5,11 @@ const {
   AdminInterface,
   CustomerInterface,
 } = require("@function/distributor-data");
-const { Converter, Tools } = require("@function/tools");
+const { Tools } = require("@function/tools");
 const logger = require("@libs/utils/logger");
 const {
   metadata: { superAdmin, paymentPlatform },
 } = require("@config/settings");
-
-const { readFileSync } = require("fs");
-
-const providers = paymentPlatform.map((v) => v.provider);
 
 /**
  * @memberof Customer
@@ -32,6 +28,7 @@ module.exports = {
     const bufferImage =
       (await msg.download("buffer")) ||
       (msg.quoted && (await msg.quoted.download("buffer")));
+    const providers = paymentPlatform.map((v) => v.provider);
     const matchExactPayment = providers.includes(paymentVia.toUpperCase());
 
     if (!bufferImage || !orderId || !paymentVia || !matchExactPayment) {
@@ -82,16 +79,21 @@ module.exports = {
                           return msg.reply(commonMessage("errorMessage"));
                         }
                         const { captionPayment, captionOrder } =
-                          AdminInterface.mapCustomerPaymentProof({
-                            payments,
-                            orders,
-                          });
+                          AdminInterface.mapForwardedCustomerPaymentProofDetails(
+                            {
+                              payments,
+                              orders,
+                            }
+                          );
                         client
                           .sendMessage(msg.from, {
                             image: bufferImage,
-                            caption: CustomerInterface.mapCustomerPaymentProof({
-                              payments,
-                            }),
+                            caption:
+                              CustomerInterface.mapForwardedCustomerPaymentProof(
+                                {
+                                  payments,
+                                }
+                              ),
                           })
                           .then(
                             setTimeout(() => {

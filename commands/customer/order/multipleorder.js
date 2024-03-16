@@ -4,7 +4,7 @@ const { Customer } = require("@controllers/customer");
 const { CustomerInterface } = require("@function/distributor-data");
 const { Tools, Converter } = require("@function/tools");
 const logger = require("@libs/utils/logger");
-const { readFileSync, writeFileSync } = require("fs");
+const { readFileSync } = require("fs");
 
 /**
  * @memberof Customer
@@ -41,7 +41,7 @@ module.exports = {
               phoneNumber: msg.senderNumber,
             }));
           await Customer.validateBeforeAppendBuckets(msg.senderNumber)
-            .then(async ({ status, data }) => {
+            .then(async ({ status }) => {
               if (!status) {
                 return msg.reply(
                   "Pesanan Kamu sebelumnya belum selesai, tunggu hingga pesanan dikonfirmasi Admin."
@@ -83,9 +83,9 @@ module.exports = {
                       }
                       await client
                         .sendMessage(msg.from, {
-                          caption: `\n*${title}*\nHarga/pcs: Rp.${memberPrice.toLocaleString(
-                            "id-ID"
-                          )}\nStok: ${stock}\nTerjual: ${sold} pcs\nPoin perolehan/pcs: ${poin}`,
+                          caption: commonMessage(
+                            "notification_DisplayShowcasedProduct"
+                          )(title, memberPrice, stock, sold, poin),
                           image: await Converter.base64ToBufferConverter(
                             product.data.image
                           ),

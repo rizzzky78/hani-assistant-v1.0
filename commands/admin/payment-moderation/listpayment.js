@@ -1,23 +1,24 @@
 const { commonMessage, moderationMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
-const { AdminInterface } = require("@function/distributor-data");
 const { Validation, Tools, PDF } = require("@function/tools");
 const logger = require("@libs/utils/logger");
-const { superAdmin, adminData } = require("@config/settings").metadata;
+const {
+  metadata: { superAdmin, adminData },
+} = require("@config/settings");
 
 /**
  * @memberof Admin
  * @type { import('@libs/builders/command').ICommand }
  */
 module.exports = {
-  aliases: ["listtransaksi"],
+  aliases: ["list-transaksi"],
   category: "admin",
   permission: "admin",
   typeArgs: "none",
   expectedArgs: "none",
   exampleArgs: "-",
   description: `Melihat daftar keseluruhan data transaksi pembayaran Customer dalam bentuk PDF.`,
-  callback: async ({ msg, client, args }) => {
+  callback: async ({ msg, client }) => {
     const isAdmin = Validation.validateAdmin(msg.senderNumber, {
       superAdmin,
       adminData,
@@ -37,18 +38,17 @@ module.exports = {
                   moderationMessage("notification_NoTransactionsExist")
                 );
               } else {
-                await PDF.createPDF({
+                const { doc } = await PDF.createPDF({
                   document: PDF.mapInputData({
                     data: { payments: paymentData },
                     type: "payments",
                   }),
-                }).then(({ doc }) => {
-                  return client.sendMessage(msg.from, {
-                    document: doc,
-                    fileName: `Daftar Bukti Pembayaran Customer`,
-                    mimetype: "application/pdf",
-                    caption: `Dicetak pada tanggal: ${Tools.getDate()}`,
-                  });
+                });
+                return client.sendMessage(msg.from, {
+                  document: doc,
+                  fileName: `Daftar Bukti Pembayaran Customer`,
+                  mimetype: "application/pdf",
+                  caption: `Dicetak pada tanggal: ${Tools.getDate()}`,
                 });
               }
             })

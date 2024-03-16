@@ -8,7 +8,7 @@ const { superAdmin, adminData } = require("@config/settings").metadata;
  * @type { import('@libs/builders/command').ICommand }
  */
 module.exports = {
-  aliases: ["listselesai", "order-selesai"],
+  aliases: ["pesanan-selesai"],
   category: "admin",
   permission: "admin",
   typeArgs: "none",
