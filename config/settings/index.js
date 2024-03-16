@@ -12,7 +12,7 @@ const session = {
  */
 const mongoConfig = {
   //
-  uri: `mongodb+srv://rizzzky:H6Pb3rN9GbocoDfY@bot-database.w7oyxwa.mongodb.net/?retryWrites=true&w=majority`, // jgn idubah
+  uri: process.env.MONGOFB_URI, // jgn idubah
   databaseName: process.env.DB_NAME, // jgn diubah
   collection: {
     main: {
@@ -67,22 +67,22 @@ const metadata = {
     {
       provider: "GOPAY",
       key: "08123456789",
-      name: "Wumbo",
+      name: "Atas Nama XXX",
     },
     {
       provider: "SHOPEEPAY",
       key: "08123456789",
-      name: "Wumbo",
+      name: "Atas Nama XXX",
     },
     {
       provider: "BRI",
       key: "123456789",
-      name: "Wumbo",
+      name: "Atas Nama XXX",
     },
     {
       provider: "BSI",
       key: "123456789",
-      name: "Wumbo",
+      name: "Atas Nama XXX",
     },
   ],
 };
