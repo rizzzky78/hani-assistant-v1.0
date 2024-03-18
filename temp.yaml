@@ -1,0 +1,75 @@
+proxies:
+
+# List Proxies
+
+# By DewaWeb
+- name: DewaWeb
+  server: bkad.cloud
+  type: vmess
+  port: 443
+  uuid: 2732403c-58cb-43ed-a897-44d1bb42772c
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  servername: id7.fastvpn.biz.id
+  network: ws
+  ws-opts:
+    path: /vmess
+    headers:
+      Host: id7.fastvpn.biz.id
+  udp: true
+  
+# By Wowrack via INT
+- name: WowRack
+  server: quiz.int.vidio.com
+  type: vmess
+  port: 443
+  uuid: b469c779-36e7-42ee-992a-083c0be11877
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  servername: id8.fastvpn.biz.id
+  network: ws
+  ws-opts:
+    path: /vmess
+    headers:
+      Host: id8.fastvpn.biz.id
+  udp: true
+  
+# Reduntant DewaWeb via STAGING
+- name: DewaWeb-Staging
+  server: quiz.staging.vidio.com
+  type: vmess
+  port: 443
+  uuid: 2732403c-58cb-43ed-a897-44d1bb42772c
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  servername: id7.fastvpn.biz.id
+  network: ws
+  ws-opts:
+    path: /vmess
+    headers:
+      Host: id7.fastvpn.biz.id
+  udp: true
+  
+# Reduntant WowRack via INT
+- name: WowRack-Staging
+  server: quiz.staging.vidio.com
+  type: vmess
+  port: 443
+  uuid: b469c779-36e7-42ee-992a-083c0be11877
+  alterId: 0
+  cipher: auto
+  tls: true
+  skip-cert-verify: true
+  servername: id8.fastvpn.biz.id
+  network: ws
+  ws-opts:
+    path: /vmess
+    headers:
+      Host: id8.fastvpn.biz.id
+  udp: true
