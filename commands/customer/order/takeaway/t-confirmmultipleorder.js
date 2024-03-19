@@ -41,11 +41,9 @@ module.exports = {
                   }
                   client
                     .sendMessage(msh.from, {
-                      text: JSON.stringify(
-                        { message: "Orders Data", orders },
-                        null,
-                        2
-                      ),
+                      text: CustomerInterface.mapCustomerOrderDetails({
+                        orders,
+                      }),
                     })
                     .then(
                       setTimeout(() => {

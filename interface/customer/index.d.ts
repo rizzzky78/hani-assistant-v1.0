@@ -29,6 +29,8 @@ export type PurchaseData = {
   data: RecordPurchaseData; // Data detail pemesanan
 };
 
+export type OrderType = "takeaway" | "dropship";
+
 /**
  * Customer Buckets
  *
@@ -108,6 +110,7 @@ export type Order = {
 
 export type Purchases = {
   orderId: string;
+  orderType: OrderType;
   timeStamp: string;
   isCompleted: boolean;
   isPayed: boolean;

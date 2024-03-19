@@ -1,7 +1,7 @@
 const { moderationMessage, commonMessage } = require("@config/messages");
 const { Admin, Moderation } = require("@controllers/admin");
 const { CustomerInterface } = require("@function/distributor-data");
-const { Validation, PDF } = require("@function/tools");
+const { Validation, PDF, Tools } = require("@function/tools");
 const logger = require("@libs/utils/logger");
 const {
   metadata: { superAdmin, adminData },
@@ -19,7 +19,7 @@ module.exports = {
   expectedArgs: "<QUERY FORMS>",
   exampleArgs: "Formulir",
   description: "Mengirimkan Invoice dan menyelesaikan pemesanan Customer.",
-  callback: async ({ msg, client, fullArgs }) => {
+  callback: async ({ msg, client, fullArgs, args }) => {
     const isAdmin = Validation.validateAdmin(msg.senderNumber, {
       superAdmin,
       adminData,
@@ -35,11 +35,18 @@ module.exports = {
           moderationMessage("invalid_QueryImageInvoiceFormInput")
         );
       } else {
-        const formRegExp =
-          /Pemesanan\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nNomor Resi: ([^\n]+)\nCatatan: ([^]+)/;
+        const [, orderType] = Tools.arrayModifier("n", args);
+        let formRegExp = new RegExp();
+        if (orderType === "Dropship") {
+          formRegExp =
+            /Pemesanan Dropship\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nNomor Resi: ([^\n]+)\nCatatan: ([^]+)/;
+        } else if (orderType === "Takeaway") {
+          formRegExp =
+            /Pemesanan Takeaway\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nCatatan: ([^]+)/;
+        }
         const matchRegExp = fullArgs.match(formRegExp);
         if (matchRegExp) {
-          const formInvoice = matchRegExp.splice(1);
+          const formInvoice = Tools.arrayModifier("n", matchRegExp.splice(1));
           if (!formInvoice.every((v) => v)) {
             return msg.reply(moderationMessage("invalid_QueryFormsAsEmpty"));
           } else {
@@ -64,11 +71,11 @@ module.exports = {
                         )
                       );
                     }
-                    await Admin.completeCustomerOrder({
-                      orderId,
-                      transactionId,
-                      receiptNumber,
-                      adminNotes,
+                    const state = orderType === "Dropship";
+                    await Admin.completeCustomerOrder(orderType, {
+                      metadata: [orderId, transactionId],
+                      receiptNumber: state ? receiptNumber : "-",
+                      adminNotes: state ? adminNotes : receiptNumber,
                       image: bufferImage,
                     }).then(async ({ status, message, data }) => {
                       if (status === "failed") {

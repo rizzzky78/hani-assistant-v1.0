@@ -56,6 +56,7 @@ module.exports = {
                       )(transactionId)
                     );
                   } else {
+                    const orderType = order.data.orderType
                     client
                       .sendMessage(msg.from, {
                         text: moderationMessage("success_ConfirmCustomerOrder")(
@@ -73,10 +74,13 @@ module.exports = {
                             .then(
                               setTimeout(() => {
                                 client.sendMessage(msg.from, {
-                                  text: AdminInterface.makeInvoiceForm({
-                                    order,
-                                    payment,
-                                  }),
+                                  text: AdminInterface.makeInvoiceForm(
+                                    orderType,
+                                    {
+                                      order,
+                                      payment,
+                                    }
+                                  ),
                                 });
                               }, 3000)
                             );

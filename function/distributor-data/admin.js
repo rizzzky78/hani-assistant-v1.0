@@ -302,8 +302,8 @@ class AdminInterface {
     const {
       status,
       data: {
+        orderType,
         orderId,
-
         data: {
           buckets,
           totalItem,
@@ -319,6 +319,10 @@ class AdminInterface {
     } = orders;
 
     const val = {
+      orderType:
+        orderType === "dropship"
+          ? `Dropship / Dipaket`
+          : `Pesan Sekarang Diambil Nanti`,
       products: buckets
         .map((v, i) => {
           const { productName, price, qtyAmount } = v;
@@ -329,8 +333,8 @@ class AdminInterface {
         })
         .join("\n\n"),
       weights: RajaOngkir.weightConverter({ value: totalWeight, parse: true }),
-      pricesProduct: totalPrice.toLocaleString("id-ID"),
-      fullPrice: totalExactPrice.toLocaleString("id-ID"),
+      pricesProduct: Tools.localePrice(totalPrice),
+      fullPrice: Tools.localePrice(totalExactPrice),
     };
 
     const captionPayment =
@@ -354,6 +358,7 @@ class AdminInterface {
       `--------- *Draft Pemesanan - (Sudah Dibayar)*\n\n` +
       `ID Pemesanan: *${orderId}*\n` +
       `Waktu Dipesan: *${timeStamp}*\n` +
+      `Tipe Pesanan: *${val.orderType}*\n` +
       `Status: *Menunggu Admin memverifikasi dan mengkonfirmasi*\n\n` +
       `--------- *Detail Pemesanan*\n` +
       `---- *Pemesan*\n` +
@@ -388,14 +393,14 @@ class AdminInterface {
       `--------- *Rekapitulasi Pemesanan*\n` +
       `Total Item: *${totalItem} item*\n` +
       `Total Poin: *${totalPoin} poin*\n` +
-      `Total Harga Keseluruhan Produk: *Rp.${val.pricesProduct},-*\n`;
+      `Total Harga Keseluruhan Produk: *${val.pricesProduct}*\n`;
     if (recipient && expedition) {
       captionOrder += `Biaya Ekspedisi: *${Tools.localePrice(
         expedition.fees
       )}*\n`;
     }
     captionOrder +=
-      `Total Keseluruhan: *Rp.${val.fullPrice}*,-\n\n` +
+      `Total Keseluruhan: *${val.fullPrice}*\n\n` +
       `> *Catatan*\n` +
       `> Mohon sesuaikan pesanan dengan data yang tercantum.\n> Setelah menggunakan kode perintah *terima-pesanan*, maka Admin wajib mengisikan dan mengirimkan Form Invoice secara lengkap. ` +
       `Invoice nantinya akan diteruskan kepada pihak pemesan.`;
@@ -403,16 +408,16 @@ class AdminInterface {
   }
 
   /**
-   * @param { "takeaway" | "dropship" } via
+   * @param { import("@interface/customer").OrderType } orderType
    * @param { import("@interface/distributor-data").InvoiceFormDto } dto
    */
-  static makeInvoiceForm(via, { order, payment }) {
+  static makeInvoiceForm(orderType, { order, payment }) {
     const {
       metadata: { orderId, transactionId },
     } = payment;
 
     const formsDropship =
-      `Invoice Pemesanan\n` +
+      `Invoice Pemesanan Dropship\n` +
       `---- Data Pemesanan\n` +
       `ID Pemesanan: ${orderId}\n` +
       `ID Transaksi: ${transactionId}\n` +
@@ -420,14 +425,13 @@ class AdminInterface {
       `Nomor Resi: (isikan nomor resi)\n` +
       `Catatan: (opsional, lampirkan catatan ke customer)`;
     const formsTakeaway =
-      `Invoice Pemesanan\n` +
+      `Invoice Pemesanan Takeaway\n` +
       `---- Data Pemesanan\n` +
       `ID Pemesanan: ${orderId}\n` +
       `ID Transaksi: ${transactionId}\n` +
       `---- Form Admin\n` +
-      `Nomor Resi: -Dipesan Takeaway-\n` +
       `Catatan: (opsional, lampirkan catatan ke customer)`;
-    return via === "dropship" ? formsDropship : formsTakeaway;
+    return orderType === "dropship" ? formsDropship : formsTakeaway;
   }
 
   /**

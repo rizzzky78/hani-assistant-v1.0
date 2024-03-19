@@ -282,6 +282,7 @@ class Customer {
       isCompleted: false,
       isPayed: false,
       payedVia: "UNPAID",
+      orderType: "takeaway",
       data: {
         buckets,
         totalItem: products.accumulativeItem,
@@ -394,6 +395,7 @@ class Customer {
         isCompleted: false,
         isPayed: false,
         payedVia: "UNPAID",
+        orderType: "dropship",
         data: {
           buckets,
           totalItem: v.accumulativeItem,

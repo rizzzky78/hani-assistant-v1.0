@@ -658,11 +658,17 @@ class Admin {
 
   /**
    *
+   * @param { "Dropship" | "Takeaway" } orderType
    * @param { import("@interface/controllers/admin").InvoiceDto } dto
    * @returns { Promise<import("@interface/controllers/admin").CompleteCustomerOrderCallback> } dto
    */
-  static completeCustomerOrder = async (dto) => {
-    const { orderId, transactionId, receiptNumber, adminNotes, image } = dto;
+  static completeCustomerOrder = async (orderType, dto) => {
+    const {
+      metadata: [orderId, transactionId],
+      receiptNumber,
+      adminNotes,
+      image,
+    } = dto;
     try {
       const {
         ordererName,
@@ -701,6 +707,7 @@ class Admin {
             data: null,
           };
         } else {
+          const stateTypeOrder = orderType === "Dropship";
           const { key } = await Moderation.createKeypairImages(image);
           /**
            * @type { import("@interface/customer").CustomerInvoice }
@@ -714,6 +721,7 @@ class Admin {
            * @type { import("@interface/order-data").ApprovalOrderData }
            */
           const approvalData = {
+            orderType: stateTypeOrder ? "dropship" : "takeaway",
             orderId,
             transactionId,
             timeStamp: Tools.getDate(),
@@ -730,9 +738,11 @@ class Admin {
               via,
               nominal,
               product: totalPrice,
-              expFees: expedition.fees,
+              expFees: stateTypeOrder ? expedition.fees : 0,
             },
-            expedition: { ...expedition, receiptNumber },
+            expedition: stateTypeOrder
+              ? { ...expedition, receiptNumber }
+              : null,
             products: buckets,
           };
 
@@ -747,7 +757,7 @@ class Admin {
                   "data.purchaseHistory.$.isCompleted": true,
                   "data.purchaseHistory.$.invoices": customerInvoice,
                   "data.purchaseHistory.$.data.expedition.receiptNumber":
-                    receiptNumber,
+                    stateTypeOrder ? receiptNumber : "Dipesan Takeaway",
                   "data.purchaseHistory.$.data.recipient.adminNote": adminNotes
                     ? adminNotes
                     : "-",
@@ -761,7 +771,9 @@ class Admin {
                 $set: {
                   status: "completed",
                   "data.isCompleted": true,
-                  "data.data.expedition.receiptNumber": receiptNumber,
+                  "data.data.expedition.receiptNumber": stateTypeOrder
+                    ? receiptNumber
+                    : "Dipesan Takeaway",
                 },
               },
               { returnDocument: "after" }

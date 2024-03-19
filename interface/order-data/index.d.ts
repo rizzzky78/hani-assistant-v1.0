@@ -3,6 +3,7 @@ import {
   Buckets,
   CustomerInvoice,
   ExpeditionDetails,
+  OrderType,
   Purchases,
   RecordPurchaseData,
 } from "@interface/customer";
@@ -42,6 +43,7 @@ export type AdminConfirmedData = {
  * Data individual (data pemesanan selesai), hanya dapat diakses oleh Admin
  */
 export type ApprovalOrderData = {
+  orderType: OrderType;
   orderId: string;
   transactionId: string;
   timeStamp: string;

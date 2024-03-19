@@ -395,6 +395,7 @@ class CustomerInterface {
     const {
       status,
       data: {
+        orderType,
         orderId,
         timeStamp,
         data: {
@@ -405,11 +406,8 @@ class CustomerInterface {
           totalWeight,
           totalExactPrice,
           orderer: [ordrName, ordrPhone, ordrHniId],
-          expedition: { service, description, fees, etd },
-          recipient: {
-            metadata: [recName, recPhone, recHniId],
-            fullAddress,
-          },
+          expedition,
+          recipient,
         },
       },
     } = orders;
@@ -430,42 +428,58 @@ class CustomerInterface {
       value: totalWeight,
       parse: true,
     });
-    const [prov, district, subDist, postalCode] = fullAddress;
+    const stateOrderType =
+      orderType === "dropship"
+        ? `Dropship / Dipaket`
+        : `Pesan Sekarang Diambil Nanti`;
 
-    const caption =
+    let caption =
       `--------- *Detail Pemesanan*\n\n` +
       `ID Pemesanan: *${orderId}*\n` +
-      `Waktu: *${timeStamp} WIB*\n\n` +
+      `Waktu: *${timeStamp} WIB*\n` +
+      `Tipe Pemesanan: *${stateOrderType}*` +
       `Status Pemesanan: *${this.mapStatusOrder(status)}*\n\n` +
       `--------- *Nama Pemesan*\n` +
       `Nama: *${ordrName}*\n` +
       `No. telp: *${ordrPhone}*\n` +
-      `HNI ID: *${ordrHniId}*\n\n` +
-      `--------- *Nama Penerima*\n` +
-      `Nama: *${recName}*\n` +
-      `No. telp: *${recPhone}*\n` +
-      `HNI ID: *${recHniId ? recHniId : "-"}*\n` +
-      `Alamat Lengkap: *${fullAddress.join(", ")}*\n\n` +
+      `HNI ID: *${ordrHniId}*\n\n`;
+    if (recipient && expedition) {
+      const {
+        metadata: [recName, recPhone, recHniId],
+        fullAddress,
+      } = recipient;
+      const [prov, district, subDist, postalCode] = fullAddress;
+      const { service, description, fees, etd } = expedition;
+      caption +=
+        `--------- *Nama Penerima*\n` +
+        `Nama: *${recName}*\n` +
+        `No. telp: *${recPhone}*\n` +
+        `HNI ID: *${recHniId ? recHniId : "-"}*\n` +
+        `Alamat Lengkap: *${fullAddress.join(", ")}*\n\n` +
+        `--------- *Ekspedisi*\n` +
+        `Kurir: JNE\n` +
+        `Service: *${service}* - ${description}\n` +
+        `Total estimasi berat paket: *${weights} kg*\n` +
+        `Tujuan Kota/Kabupaten | kode pos: *${district}* | *${postalCode}*\n` +
+        `Biaya pengiriman: *Rp.${fees.toLocaleString("id-ID")}*\n` +
+        `Estimasi sampai tujuan: *${etd} hari*\n\n`;
+    }
+    caption +=
       `--------- *Keranjang Pemesanan*\n` +
       `${products}\n\n` +
       `--------- *Rekapitulasi*\n` +
       `Total item: *${totalItem} pcs/produk*\n` +
       `Total poin: *${totalPoin} poin*\n` +
       `Total harga keseluruhan: *Rp.${totalPrice.toLocaleString("id-ID")}*\n` +
-      `Total estimasi berat: *${weights} kg*\n\n` +
-      `--------- *Ekspedisi*\n` +
-      `Kurir: JNE\n` +
-      `Service: *${service}* - ${description}\n` +
-      `Total estimasi berat paket: *${weights} kg*\n` +
-      `Tujuan Kota/Kabupaten | kode pos: *${district}* | *${postalCode}*\n` +
-      `Biaya pengiriman: *Rp.${fees.toLocaleString("id-ID")}*\n` +
-      `Estimasi sampai tujuan: *${etd} hari*\n\n` +
+      `Total estimasi berat: *${weights} kg*\n\n`;
+    caption +=
       `--------- *Total Pembayaran*\n` +
-      `Produk: *Rp.${totalPrice.toLocaleString("id-ID")}*\n` +
-      `Pengiriman: *Rp.${fees.toLocaleString("id-ID")}*\n` +
-      `Total harga produk + biaya pengiriman: *Rp.${totalExactPrice.toLocaleString(
-        "id-ID"
-      )}*\n`;
+      `Produk: *Rp.${totalPrice.toLocaleString("id-ID")}*\n`;
+    if (expedition) {
+      caption += `Pengiriman: *${Tools.localePrice(expedition.fees)}*\n`;
+    }
+    caption++;
+    `Total Pembayaran: *${Tools.localePrice(totalExactPrice)}*\n`;
     return caption;
   }
 
@@ -595,6 +609,7 @@ class CustomerInterface {
    */
   static mapCustomerInvoice({ approval }) {
     const {
+      orderType,
       orderId,
       transactionId,
       timeStamp,
@@ -609,10 +624,14 @@ class CustomerInterface {
       .map((v) => `*${v.productName}* (${v.qtyAmount})`)
       .join(", ");
     const v = {
-      productPrices: payment.product.toLocaleString("id-ID"),
-      expFees: payment.expFees.toLocaleString("id-ID"),
-      totalPrices: payment.nominal.toLocaleString("id-ID"),
+      productPrices: Tools.localePrice(payment.product),
+      expFees: payment.expFees === 0 ? "-" : Tools.localePrice(payment.expFees),
+      totalPrices: Tools.localePrice(payment.nominal),
     };
+    const stateTypeOrder =
+      orderType === "dropship"
+        ? `Dropship / Dipaket`
+        : `Pesan Sekarang Diambil Nanti`;
 
     const captionImage =
       `*Bukti Invoice*\n` +
@@ -621,16 +640,19 @@ class CustomerInterface {
         metadata.adminNotes ? metadata.adminNotes : "-"
       }*\n\n` +
       `> _Invoice PDF akan dikirimkan setelah pesan ini._`;
-    const captionInvoice =
+    let captionInvoice =
       `--------- *Invoice Pemesanan*\n\n` +
       `Tanggal: *${timeStamp} WIB*\n\n` +
       `ID Invoice: *${invoiceId}*\n` +
       `ID Pemesanan: *${orderId}*\n` +
       `ID Transaksi: *${transactionId}*\n` +
+      `Tipe Pemesanan: *${stateTypeOrder}*\n`;
+    if (expedition) {
       `Ekspedisi: *${expedition.code.toUpperCase()} - ${
         expedition.description
-      }*\n` +
-      `No. Resi: *${expedition.receiptNumber}*\n\n` +
+      }*\n` + `No. Resi: *${expedition.receiptNumber}*\n\n`;
+    }
+    captionInvoice +=
       `Status: *Selesai/Dikirim*\n\n` +
       `--------- *Detail Pemesan*\n` +
       `Nama: *${metadata.orderer}*\n` +
@@ -638,9 +660,9 @@ class CustomerInterface {
       `HNI ID: *${metadata.hniId}*\n\n` +
       `--------- *Detail Pemesanan*\n` +
       `Produk: ${productList}\n\n` +
-      `Harga Produk: *${Tools.localePrice(v.productPrices)}*\n` +
-      `Biaya Pengiriman: *${Tools.localePrice(v.expFees)}*\n` +
-      `Total Dibayarkan: *${Tools.localePrice(v.totalPrices)}*\n\n` +
+      `Harga Produk: *${v.productPrices}*\n` +
+      `Biaya Pengiriman: *${v.expFees}*\n` +
+      `Total Dibayarkan: *${v.totalPrices}*\n\n` +
       `> Kamu dapat melihat detail pemesanan pada file PDF yang terlampir.`;
     return { captionImage, captionInvoice };
   }

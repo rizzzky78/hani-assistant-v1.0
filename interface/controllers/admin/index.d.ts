@@ -49,8 +49,7 @@ export type UpdateProductDto = {
 };
 
 export type InvoiceDto = {
-  orderId: string;
-  transactionId: string;
+  metadata: [orderId: string, transactionId: string];
   receiptNumber: string;
   adminNotes: string;
   image: Buffer;

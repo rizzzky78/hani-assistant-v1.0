@@ -82,22 +82,28 @@ class PDF {
           "Status Bayar", //10
           "Draft", //11
         ],
-        tbody: ongoingOrders.map((v, idx) => [
-          idx + 1,
-          v.data.orderId,
-          `A/N ${v.ordererName}\nHP ${v.ordererId}\nHNI ID ${v.hniId}`,
-          v.data.data.buckets
-            .map((v) => `- ${v.productName} (${v.qtyAmount})`)
-            .join("\n"),
-          v.data.data.totalItem,
-          Tools.localePrice(v.data.data.totalPrice) +
-            "\n" +
-            Tools.localePrice(v.data.data.expedition.fees),
-          Tools.localePrice(v.data.data.totalExactPrice),
-          v.data.isPayed ? v.data.payedVia : "Belum Dibayar",
-          v.data.data.additionalInfo,
-        ]),
-        tfoot: `Akses Detail pemesanan dengan mengetik "order <ID Pemsanan>".`,
+        tbody: ongoingOrders.map((v, idx) => {
+          const {
+            data: { orderType },
+          } = v;
+          const stateOrder = orderType === "dropship";
+          return [
+            idx + 1,
+            v.data.orderId,
+            `A/N ${v.ordererName}\nHP ${v.ordererId}\nHNI ID ${v.hniId}`,
+            v.data.data.buckets
+              .map((v) => `- ${v.productName} (${v.qtyAmount})`)
+              .join("\n"),
+            v.data.data.totalItem,
+            Tools.localePrice(v.data.data.totalPrice) + "\n" + stateOrder
+              ? Tools.localePrice(v.data.data.expedition.fees)
+              : "-",
+            Tools.localePrice(v.data.data.totalExactPrice),
+            v.data.isPayed ? v.data.payedVia : "Belum Dibayar",
+            v.data.data.additionalInfo,
+          ];
+        }),
+        tfoot: `Akses Detail pemesanan dengan mengetik "cek-pesanan <ID Pemsanan>".`,
         tfontsize: 5,
         cellsOption: "orders",
       };
@@ -150,14 +156,18 @@ class PDF {
             .map((v) => `- ${v.productName} (${v.qtyAmount})`)
             .join("\n"),
           v.products.reduce((v, t) => v + t.qtyAmount, 0),
-          `${v.payment.via}\n${Tools.localePrice(
-            v.payment.product
-          )}\n${Tools.localePrice(v.payment.expFees)}`,
-          `${v.expedition.code.toUpperCase()} - ${v.expedition.service}\n${
-            v.expedition.receiptNumber
+          `${v.payment.via}\n${Tools.localePrice(v.payment.product)}\n${
+            v.payment.expFees === 0 ? "-" : Tools.localePrice(v.payment.expFees)
+          }`,
+          `${
+            v.expedition
+              ? `${v.expedition.code.toUpperCase()} - ${
+                  v.expedition.service
+                }\n${v.expedition.receiptNumber}`
+              : `Dipesan Takeaway`
           }`,
         ]),
-        tfoot: `Akses detail data pemesanan selesai dengan mengetik "pesanan <ID Invoice>".`,
+        tfoot: `Akses detail data pemesanan selesai dengan mengetik "cek-pesanan <ID Invoice>".`,
         tfontsize: 6.5,
         cellsOption: "approvals",
       };
@@ -341,12 +351,9 @@ class PDF {
       pdf.text(`Produk: ${Tools.localePrice(v.payment.product)}`, 15, 85, {
         align: "left",
       });
-      pdf.text(
-        `Biaya Pengiriman: ${Tools.localePrice(v.payment.expFees)}`,
-        15,
-        89,
-        { align: "left" }
-      );
+      const expFees =
+        v.payment.expFees === 0 ? "-" : Tools.localePrice(v.payment.expFees);
+      pdf.text(`Biaya Pengiriman: ${expFees}`, 15, 89, { align: "left" });
       pdf.text(`Dibayar Via: ${v.payment.via}`, 15, 93, {
         align: "left",
       });
@@ -362,20 +369,22 @@ class PDF {
       // pdf.setFontSize(8);
       pdf.text(`${v.metadata.info}`, leftMargin, 45, { align: "left" });
 
-      pdf.setFont("helvetica", "bold");
-      pdf.text(
-        `Ekspedisi - ${v.expedition.code.toUpperCase()} ${
-          v.expedition.description
-        }`,
-        leftMargin,
-        95,
-        { align: "left" }
-      );
+      if (v.expedition) {
+        pdf.setFont("helvetica", "bold");
+        pdf.text(
+          `Ekspedisi - ${v.expedition.code.toUpperCase()} ${
+            v.expedition.description
+          }`,
+          leftMargin,
+          95,
+          { align: "left" }
+        );
 
-      pdf.setFont("helvetica", "normal");
-      pdf.text(`No Resi: ${v.expedition.receiptNumber}`, leftMargin, 100, {
-        align: "left",
-      });
+        pdf.setFont("helvetica", "normal");
+        pdf.text(`No Resi: ${v.expedition.receiptNumber}`, leftMargin, 100, {
+          align: "left",
+        });
+      }
 
       // GAP
       // pdf.setFontSize(9);
