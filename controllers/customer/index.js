@@ -307,7 +307,7 @@ class Customer {
       metadata: {
         hashId: IDGenerator.generateRandom(8),
         totalExactPrice: purchasesData.data.totalExactPrice,
-        expedition: purchasesData.data.expedition,
+        expedition: null,
       },
       data: purchasesData,
     };
