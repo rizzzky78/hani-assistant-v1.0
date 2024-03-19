@@ -160,7 +160,7 @@ class PDF {
             v.payment.expFees === 0 ? "-" : Tools.localePrice(v.payment.expFees)
           }`,
           `${
-            Object.keys(v.expedition).length > 0
+            v.orderType === "dropship"
               ? `${v.expedition.code.toUpperCase()} - ${
                   v.expedition.service
                 }\n${v.expedition.receiptNumber}`
@@ -216,7 +216,7 @@ class PDF {
           "Produk (pcs)",
           "QTY",
           "Total Poin",
-          "Total Bayar\n(+ongkir)",
+          "Total Bayar",
           "Draft",
         ],
         tbody: completedOrders.map((v, i) => [

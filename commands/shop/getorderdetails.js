@@ -1,7 +1,7 @@
 const { commonMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
 const { CustomerInterface } = require("@function/distributor-data");
-const { Tools } = require("@function/tools");
+const { Tools, Converter } = require("@function/tools");
 const logger = require("@libs/utils/logger");
 
 /**
@@ -42,9 +42,15 @@ module.exports = {
                       }),
                     })
                     .then(
-                      setTimeout(() => {
+                      setTimeout(async () => {
+                        const { base64 } = await Moderation.getKeyPairImages(
+                          paymentData.payment.image
+                        );
                         return client.sendMessage(msg.from, {
-                          text: CustomerInterface.mapCustomerPaymentProof({
+                          image: await Converter.base64ToBufferConverter(
+                            base64
+                          ),
+                          caption: CustomerInterface.mapCustomerPaymentProof({
                             payments: paymentData,
                           }),
                         });
