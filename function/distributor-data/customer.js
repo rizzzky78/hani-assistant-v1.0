@@ -312,7 +312,7 @@ class CustomerInterface {
       value: val.totalWeight,
       parse: true,
     });
-    const orderType = cmdInput === "pesan" ? `selesai` : `checkout`;
+    const orderType = cmdInput === "pesan" ? `checkout` : `selesai`;
     const caption =
       `\n*Data Pengguna*\n` +
       `Nama Pengguna: ${tagName}\n` +
