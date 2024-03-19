@@ -36,7 +36,7 @@ module.exports = {
         );
       } else {
         const formRegExpDropship =
-          /Pemesanan Dropship\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nNomor Resi: ([^\n]+)\nCatatan: ([^]+)/;
+          /Invoice Pemesanan\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nNomor Resi: ([^\n]+)\nCatatan: ([^]+)/;
         const matchRegExp = fullArgs.match(formRegExpDropship);
         if (matchRegExp) {
           const formInvoice = Tools.arrayModifier("n", matchRegExp.splice(1));
