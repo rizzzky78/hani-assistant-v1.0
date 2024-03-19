@@ -438,7 +438,7 @@ class CustomerInterface {
       `--------- *Detail Pemesanan*\n\n` +
       `ID Pemesanan: *${orderId}*\n` +
       `Waktu: *${timeStamp} WIB*\n` +
-      `Tipe Pemesanan: *${stateOrderType}*` +
+      `Tipe Pemesanan: *${stateOrderType}*\n` +
       `Status Pemesanan: *${this.mapStatusOrder(status)}*\n\n` +
       `--------- *Nama Pemesan*\n` +
       `Nama: *${ordrName}*\n` +
@@ -482,7 +482,8 @@ class CustomerInterface {
     caption +=
       `Total Pembayaran: *${Tools.localePrice(totalExactPrice)}*\n\n` +
       `> *Catatan*\n` +
-      `> Silahkan periksa kembali data pemesanan, salin dan kirimkan kode konfirmasi pemesanan setelah pesan ini untuk melanjutkan proses pemesananmu.`;
+      `> Silahkan periksa kembali data pemesanan, salin dan kirimkan kode konfirmasi pemesanan setelah pesan ini untuk melanjutkan proses pemesananmu. ` +
+      `Jika pemesananmu kurang sesuai, ketik "*batal*" untuk membatalkan pemesanan dan memulai dari awal.`
     return caption;
   }
 

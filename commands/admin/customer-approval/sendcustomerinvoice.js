@@ -12,7 +12,7 @@ const {
  * @type { import('@libs/builders/command').ICommand }
  */
 module.exports = {
-  aliases: ["invoice"],
+  aliases: ["deprecated-x"],
   category: "admin",
   permission: "admin",
   typeArgs: "forms",
@@ -36,117 +36,232 @@ module.exports = {
         );
       } else {
         const [, orderType] = Tools.arrayModifier("n", args);
-        let formRegExp = new RegExp();
+
         if (orderType === "Dropship") {
-          formRegExp =
+          const formRegExpDropship =
             /Pemesanan Dropship\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nNomor Resi: ([^\n]+)\nCatatan: ([^]+)/;
-        } else if (orderType === "Takeaway") {
-          formRegExp =
-            /Pemesanan Takeaway\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nCatatan: ([^]+)/;
-        }
-        const matchRegExp = fullArgs.match(formRegExp);
-        if (matchRegExp) {
-          const formInvoice = Tools.arrayModifier("n", matchRegExp.splice(1));
-          if (!formInvoice.every((v) => v)) {
-            return msg.reply(moderationMessage("invalid_QueryFormsAsEmpty"));
-          } else {
-            const [orderId, transactionId, receiptNumber, adminNotes] =
-              formInvoice;
+          const matchRegExp = fullArgs.match(formRegExpDropship);
+          if (matchRegExp) {
+            const formInvoice = Tools.arrayModifier("n", matchRegExp.splice(1));
+            if (!formInvoice.every((v) => v)) {
+              return msg.reply(moderationMessage("invalid_QueryFormsAsEmpty"));
+            } else {
+              const [orderId, transactionId, receiptNumber, adminNotes] =
+                formInvoice;
+              console.log(formInvoice);
 
-            client
-              .sendMessage(msg.from, {
-                text: commonMessage("waitMessage"),
-              })
-              .then(async () => {
-                await Moderation.validateBothOrderAndPaymentProof({
-                  orderId,
-                  transactionId,
+              client
+                .sendMessage(msg.from, {
+                  text: commonMessage("waitMessage"),
                 })
-                  .then(async ({ isOrder, isTransaction }) => {
-                    if (!isOrder || !isTransaction) {
-                      return msg.reply(
-                        moderationMessage("notFound_orderAndTransactionIDs")(
-                          orderId,
-                          transactionId
-                        )
-                      );
-                    }
-                    const state = orderType === "Dropship";
-                    await Admin.completeCustomerOrder(orderType, {
-                      metadata: [orderId, transactionId],
-                      receiptNumber: state ? receiptNumber : "-",
-                      adminNotes: state ? adminNotes : receiptNumber,
-                      image: bufferImage,
-                    }).then(async ({ status, message, data }) => {
-                      if (status === "failed") {
-                        return msg.reply(commonMessage("errorMessage"));
-                      }
-                      if (status === "completed") {
-                        return msg.reply(
-                          moderationMessage(
-                            "invalid_OrderIdAlreadySubmitedInvoice"
-                          )(orderId)
-                        );
-                      } else if (status === "inv-qty") {
-                        return msg.reply(message);
-                      } else if (status === "success") {
-                        const { custPhoneId, approval } = data;
-
-                        const { doc } = await PDF.createPDF({
-                          document: PDF.mapInputData({
-                            data: { invoices: approval },
-                            type: "invoices",
-                          }),
-                        });
-                        const { captionImage, captionInvoice } =
-                          CustomerInterface.mapCustomerInvoice({ approval });
-                        client
-                          .sendMessage(msg.from, {
-                            text: moderationMessage(
-                              "notification_SendingInvoice"
-                            ),
-                          })
-                          .then(
-                            setTimeout(async () => {
-                              client
-                                .sendMessage(custPhoneId, {
-                                  image: bufferImage,
-                                  caption: captionImage,
-                                })
-                                .then(
-                                  setTimeout(() => {
-                                    client
-                                      .sendMessage(custPhoneId, {
-                                        document: doc,
-                                        fileName: `${approval.invoice.invoiceId}`,
-                                        mimetype: "application/pdf",
-                                        caption: captionInvoice,
-                                      })
-                                      .then(
-                                        setTimeout(() => {
-                                          return client.sendMessage(msg.from, {
-                                            text: moderationMessage(
-                                              "notification_SuccessSendInvoice"
-                                            ),
-                                          });
-                                        }, 3000)
-                                      );
-                                  }, 3000)
-                                );
-                            }, 3000)
-                          );
-                      }
-                    });
+                .then(async () => {
+                  await Moderation.validateBothOrderAndPaymentProof({
+                    orderId,
+                    transactionId,
                   })
-                  .catch((e) => {
-                    logger.error(e);
-                    console.error(e);
-                    return msg.reply(commonMessage("errorMessage"));
-                  });
-              });
+                    .then(async ({ isOrder, isTransaction }) => {
+                      if (!isOrder || !isTransaction) {
+                        return msg.reply(
+                          moderationMessage("notFound_orderAndTransactionIDs")(
+                            orderId,
+                            transactionId
+                          )
+                        );
+                      }
+                      await Admin.completeCustomerOrder(orderType, {
+                        metadata: [orderId, transactionId],
+                        receiptNumber,
+                        adminNotes,
+                        image: bufferImage,
+                      }).then(async ({ status, message, data }) => {
+                        if (status === "failed") {
+                          return msg.reply(commonMessage("errorMessage"));
+                        }
+                        if (status === "completed") {
+                          return msg.reply(
+                            moderationMessage(
+                              "invalid_OrderIdAlreadySubmitedInvoice"
+                            )(orderId)
+                          );
+                        } else if (status === "inv-qty") {
+                          return msg.reply(message);
+                        } else if (status === "success") {
+                          const { custPhoneId, approval } = data;
+
+                          const { doc } = await PDF.createPDF({
+                            document: PDF.mapInputData({
+                              data: { invoices: approval },
+                              type: "invoices",
+                            }),
+                          });
+                          const { captionImage, captionInvoice } =
+                            CustomerInterface.mapCustomerInvoice({ approval });
+                          client
+                            .sendMessage(msg.from, {
+                              text: moderationMessage(
+                                "notification_SendingInvoice"
+                              ),
+                            })
+                            .then(
+                              setTimeout(async () => {
+                                client
+                                  .sendMessage(custPhoneId, {
+                                    image: bufferImage,
+                                    caption: captionImage,
+                                  })
+                                  .then(
+                                    setTimeout(() => {
+                                      client
+                                        .sendMessage(custPhoneId, {
+                                          document: doc,
+                                          fileName: `${approval.invoice.invoiceId}`,
+                                          mimetype: "application/pdf",
+                                          caption: captionInvoice,
+                                        })
+                                        .then(
+                                          setTimeout(() => {
+                                            return client.sendMessage(
+                                              msg.from,
+                                              {
+                                                text: moderationMessage(
+                                                  "notification_SuccessSendInvoice"
+                                                ),
+                                              }
+                                            );
+                                          }, 3000)
+                                        );
+                                    }, 3000)
+                                  );
+                              }, 3000)
+                            );
+                        }
+                      });
+                    })
+                    .catch((e) => {
+                      logger.error(e);
+                      console.error(e);
+                      return msg.reply(commonMessage("errorMessage"));
+                    });
+                });
+            }
+          } else {
+            return msg.reply(
+              moderationMessage("invalid_QueryFormsDoesNotMatch")
+            );
           }
-        } else {
-          return msg.reply(moderationMessage("invalid_QueryFormsDoesNotMatch"));
+        }
+        if (orderType === "Takeaway") {
+          const formRegExpTakeaway =
+            /Pemesanan Takeaway\n---- Data Pemesanan\nID Pemesanan: ([^\n]+)\nID Transaksi: ([^\n]+)\n---- Form Admin\nCatatan: ([^]+)/;
+          const matchRegExp = fullArgs.match(formRegExpTakeaway);
+          if (matchRegExp) {
+            const formInvoice = Tools.arrayModifier("n", matchRegExp.splice(1));
+            if (!formInvoice.every((v) => v)) {
+              return msg.reply(moderationMessage("invalid_QueryFormsAsEmpty"));
+            } else {
+              const [orderId, transactionId, adminNotes] = formInvoice;
+              console.log(formInvoice);
+
+              client
+                .sendMessage(msg.from, {
+                  text: commonMessage("waitMessage"),
+                })
+                .then(async () => {
+                  await Moderation.validateBothOrderAndPaymentProof({
+                    orderId,
+                    transactionId,
+                  })
+                    .then(async ({ isOrder, isTransaction }) => {
+                      if (!isOrder || !isTransaction) {
+                        return msg.reply(
+                          moderationMessage("notFound_orderAndTransactionIDs")(
+                            orderId,
+                            transactionId
+                          )
+                        );
+                      }
+                      const state = orderType === "Dropship";
+                      await Admin.completeCustomerOrder(orderType, {
+                        metadata: [orderId, transactionId],
+                        receiptNumber: "-",
+                        adminNotes,
+                        image: bufferImage,
+                      }).then(async ({ status, message, data }) => {
+                        if (status === "failed") {
+                          return msg.reply(commonMessage("errorMessage"));
+                        }
+                        if (status === "completed") {
+                          return msg.reply(
+                            moderationMessage(
+                              "invalid_OrderIdAlreadySubmitedInvoice"
+                            )(orderId)
+                          );
+                        } else if (status === "inv-qty") {
+                          return msg.reply(message);
+                        } else if (status === "success") {
+                          const { custPhoneId, approval } = data;
+
+                          const { doc } = await PDF.createPDF({
+                            document: PDF.mapInputData({
+                              data: { invoices: approval },
+                              type: "invoices",
+                            }),
+                          });
+                          const { captionImage, captionInvoice } =
+                            CustomerInterface.mapCustomerInvoice({ approval });
+                          client
+                            .sendMessage(msg.from, {
+                              text: moderationMessage(
+                                "notification_SendingInvoice"
+                              ),
+                            })
+                            .then(
+                              setTimeout(async () => {
+                                client
+                                  .sendMessage(custPhoneId, {
+                                    image: bufferImage,
+                                    caption: captionImage,
+                                  })
+                                  .then(
+                                    setTimeout(() => {
+                                      client
+                                        .sendMessage(custPhoneId, {
+                                          document: doc,
+                                          fileName: `${approval.invoice.invoiceId}`,
+                                          mimetype: "application/pdf",
+                                          caption: captionInvoice,
+                                        })
+                                        .then(
+                                          setTimeout(() => {
+                                            return client.sendMessage(
+                                              msg.from,
+                                              {
+                                                text: moderationMessage(
+                                                  "notification_SuccessSendInvoice"
+                                                ),
+                                              }
+                                            );
+                                          }, 3000)
+                                        );
+                                    }, 3000)
+                                  );
+                              }, 3000)
+                            );
+                        }
+                      });
+                    })
+                    .catch((e) => {
+                      logger.error(e);
+                      console.error(e);
+                      return msg.reply(commonMessage("errorMessage"));
+                    });
+                });
+            }
+          } else {
+            return msg.reply(
+              moderationMessage("invalid_QueryFormsDoesNotMatch")
+            );
+          }
         }
       }
     }

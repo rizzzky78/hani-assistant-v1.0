@@ -417,7 +417,7 @@ class AdminInterface {
     } = payment;
 
     const formsDropship =
-      `Invoice Pemesanan Dropship\n` +
+      `Dropship Invoice Pemesanan\n` +
       `---- Data Pemesanan\n` +
       `ID Pemesanan: ${orderId}\n` +
       `ID Transaksi: ${transactionId}\n` +
@@ -425,7 +425,7 @@ class AdminInterface {
       `Nomor Resi: (isikan nomor resi)\n` +
       `Catatan: (opsional, lampirkan catatan ke customer)`;
     const formsTakeaway =
-      `Invoice Pemesanan Takeaway\n` +
+      `Takeaway Invoice Pemesanan\n` +
       `---- Data Pemesanan\n` +
       `ID Pemesanan: ${orderId}\n` +
       `ID Transaksi: ${transactionId}\n` +
