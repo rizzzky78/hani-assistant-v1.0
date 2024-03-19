@@ -17,11 +17,18 @@ Jika kamu perlu informasi lengkap mengenai chatbot silahkan ketik *bantuan*
 > -akhir pesan-`,
   unauthorizedForAdminOnly: `Kode perintah ini hanya dapat digunakan oleh Admin Chatbot.
 > -akhir pesan-`,
-  acessCatalogue: `*Katalog Produk*\nKamu bisa membuka katalog PDF terlampir atau
-  
+  acessCatalogue: `*Katalog Produk*
+Kamu bisa membuka katalog PDF terlampir atau
+
+*Mencari Informasi Lengkap Produk*
 - Ketik "*cari <nama produk>*" untuk menampilkan informasi lengkap produk, contoh: "*cari MHS*"
+
+*Memesan Produk (Dropshiper/Dipaket)*
 - Ketik "*pesan <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*pesan sarkum # 3*"
-  
+
+*Memesan Produk (Beli Sekarang Diambil Nanti)*
+- Ketik "*beli <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*beli sarkum # 3*"
+
 *Tutorial*
 Jika Kamu masih bingung, ketik "tutorial" untuk melihat tata cara pemesanan.
   

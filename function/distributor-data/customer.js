@@ -290,9 +290,10 @@ class CustomerInterface {
 
   /**
    *
+   * @param { "pesan" | "beli" } cmdInput
    * @param { import("@interface/customer").Customer } customer
    */
-  static displayCurrentBuckes({ metadata, data }) {
+  static displayCurrentBuckes(cmdInput, { metadata, data }) {
     const mappedProducts = data.buckets
       .map((v) => {
         const { productName, price, poin, weight, qtyAmount, totalPoin } = v;
@@ -311,7 +312,7 @@ class CustomerInterface {
       value: val.totalWeight,
       parse: true,
     });
-
+    const orderType = cmdInput === "pesan" ? `selesai` : `checkout`;
     const caption =
       `\n*Data Pengguna*\n` +
       `Nama Pengguna: ${tagName}\n` +
@@ -328,9 +329,9 @@ class CustomerInterface {
       `Estimasi Total Berat Produk: *${weights} kg*\n` +
       `Akumulasi Perolehan Poin: *${val.totalPoin} poin*\n\n` +
       `---------------------------\n\n` +
-      `Catatan:\n` +
-      `[1] untuk melanjutkan proses pesananmu, silahkan ketik "*checkout*".\n` +
-      `[2] untuk menghapus keranjang produk, silahkan ketik *hapus*.`;
+      `*Catatan*\n` +
+      `> Untuk melanjutkan proses pesananmu, silahkan ketik "*${orderType}*".\n` +
+      `> Untuk menghapus produk pada keranjang, silahkan ketik *hapus*.`;
     return caption;
   }
 

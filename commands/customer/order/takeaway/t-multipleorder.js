@@ -130,6 +130,7 @@ module.exports = {
                                         ),
                                         caption:
                                           CustomerInterface.displayCurrentBuckes(
+                                            "beli",
                                             customerData
                                           ),
                                       })
