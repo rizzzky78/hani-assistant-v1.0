@@ -41,53 +41,52 @@ const mongoConfig = {
  * @type { import("../types").Metadata }
  */
 const metadata = {
-  marketPlaceName: "Halal Mart BC Cilacap 3",
-  organizationName: "HNI HPAI",
+  marketPlaceName: process.env.MARKETPLACE_NAME,
+  organizationName: process.env.ORGANIZATION_NAME,
   superAdmin: {
-    userName: "Rizky",
-    phoneNumber: "6281329585825",
+    userName: process.env.SUPER_ADMIN_NAME,
+    phoneNumber: process.env.SUPER_ADMIN_PHONE,
     phoneId: process.env.SUPER_ADMIN_ID, //"6281329585825@s.whatsapp.net",
   },
   adminData: [
     {
-      name: "Rizky 3",
-      phoneNumber: "62822281798830",
-      phoneId: "6281329585825@.whatsapp.net",
-      position: "Owner Chatbot Commerce",
+      name: process.env.ADMIN_1_NAME,
+      phoneNumber: process.env.ADMIN_1_PHONE,
+      phoneId: process.env.ADMIN_1_PHONE_ID,
+      position: process.env.ADMIN_1_ROLE,
     },
     {
-      name: "Rizky 2",
-      phoneId: "6281329585825@.whatsapp.net",
-      phoneNumber: "6281329585825",
-      position: "Developer Chatbot",
-    },
-    {
-      name: "Rizky 1",
-      phoneId: "6281329585825@.whatsapp.net",
-      phoneNumber: "6281329585825",
-      position: "Another Role",
+      name: process.env.ADMIN_2_NAME,
+      phoneNumber: process.env.ADMIN_2_PHONE,
+      phoneId: process.env.ADMIN_2_PHONE_ID,
+      position: process.env.ADMIN_2_ROLE,
     },
   ],
   paymentPlatform: [
     {
-      provider: "GOPAY",
-      key: "08123456789",
-      name: "Atas Nama XXX",
+      provider: process.env.PAYMENT_1_PROVIDER,
+      key: process.env.PAYMENT_1_KEY,
+      name: process.env.PAYMENT_1_ON_BEHALF,
     },
     {
-      provider: "SHOPEEPAY",
-      key: "08123456789",
-      name: "Atas Nama XXX",
+      provider: process.env.PAYMENT_2_PROVIDER,
+      key: process.env.PAYMENT_2_KEY,
+      name: process.env.PAYMENT_2_ON_BEHALF,
     },
     {
-      provider: "BRI",
-      key: "123456789",
-      name: "Atas Nama XXX",
+      provider: process.env.PAYMENT_3_PROVIDER,
+      key: process.env.PAYMENT_3_KEY,
+      name: process.env.PAYMENT_3_ON_BEHALF,
     },
     {
-      provider: "BSI",
-      key: "123456789",
-      name: "Atas Nama XXX",
+      provider: process.env.PAYMENT_4_PROVIDER,
+      key: process.env.PAYMENT_4_KEY,
+      name: process.env.PAYMENT_4_ON_BEHALF,
+    },
+    {
+      provider: process.env.PAYMENT_5_PROVIDER,
+      key: process.env.PAYMENT_5_KEY,
+      name: process.env.PAYMENT_5_ON_BEHALF,
     },
   ],
 };

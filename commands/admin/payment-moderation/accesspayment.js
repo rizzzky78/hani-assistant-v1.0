@@ -1,7 +1,7 @@
 const { commonMessage, moderationMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
 const { AdminInterface } = require("@function/distributor-data");
-const { Validation, Tools } = require("@function/tools");
+const { Validation, Tools, Converter } = require("@function/tools");
 const logger = require("@libs/utils/logger");
 const {
   metadata: { superAdmin, adminData },
@@ -46,9 +46,11 @@ module.exports = {
                   );
                 }
                 await Moderation.getCustomerPaymentProof(transactionId).then(
-                  (payments) => {
+                  async (payments) => {
+                    const { base64 } = await Moderation.getKeyPairImages();
                     return client.sendMessage(msg.from, {
-                      text: AdminInterface.mapCustomerPaymentProof({
+                      image: await Converter.base64ToBufferConverter(base64),
+                      caption: AdminInterface.mapCustomerPaymentProof({
                         payments,
                       }),
                     });
