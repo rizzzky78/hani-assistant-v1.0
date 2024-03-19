@@ -479,8 +479,10 @@ class CustomerInterface {
     if (expedition) {
       caption += `Pengiriman: *${Tools.localePrice(expedition.fees)}*\n`;
     }
-    caption++;
-    `Total Pembayaran: *${Tools.localePrice(totalExactPrice)}*\n`;
+    caption +=
+      `Total Pembayaran: *${Tools.localePrice(totalExactPrice)}*\n\n` +
+      `> *Catatan*\n` +
+      `> Silahkan periksa kembali data pemesanan, salin dan kirimkan kode konfirmasi pemesanan setelah pesan ini untuk melanjutkan proses pemesananmu.`;
     return caption;
   }
 

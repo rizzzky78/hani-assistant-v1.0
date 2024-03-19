@@ -40,7 +40,7 @@ module.exports = {
                     return msg.reply(commonMessage("errorMessage"));
                   }
                   client
-                    .sendMessage(msh.from, {
+                    .sendMessage(msg.from, {
                       text: CustomerInterface.mapCustomerOrderDetails({
                         orders,
                       }),
