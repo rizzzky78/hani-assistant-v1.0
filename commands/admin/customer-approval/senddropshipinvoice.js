@@ -65,7 +65,7 @@ module.exports = {
                         )
                       );
                     }
-                    await Admin.completeCustomerOrder(orderType, {
+                    await Admin.completeCustomerOrder("Dropship", {
                       metadata: [orderId, transactionId],
                       receiptNumber,
                       adminNotes,

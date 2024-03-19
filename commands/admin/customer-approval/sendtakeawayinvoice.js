@@ -63,7 +63,7 @@ module.exports = {
                         )
                       );
                     }
-                    await Admin.completeCustomerOrder(orderType, {
+                    await Admin.completeCustomerOrder("Takeaway", {
                       metadata: [orderId, transactionId],
                       receiptNumber: "-",
                       adminNotes,
