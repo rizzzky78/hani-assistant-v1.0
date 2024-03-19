@@ -1,6 +1,7 @@
 const { commonMessage, moderationMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
 const { Validation, Tools, PDF } = require("@function/tools");
+const logger = require("@libs/utils/logger");
 const { superAdmin, adminData } = require("@config/settings").metadata;
 
 /**
@@ -51,7 +52,8 @@ module.exports = {
               }
             })
             .catch((e) => {
-              Tools.loggingReport(e);
+              logger.error(e);
+              console.error(e);
               return msg.reply(commonMessage("errorMessage"));
             });
         });

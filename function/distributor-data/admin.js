@@ -292,7 +292,7 @@ class AdminInterface {
       `Total Poin: *${totalPoin} poin*\n` +
       `Total Harga Keseluruhan Produk: *Rp.${val.pricesProduct},-*\n`;
     if (stateOrderDropship) {
-      caption += `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n`;
+      caption += `Biaya Ekspedisi: *${Tools.localePrice(expedition.fees)}*\n`;
     }
     `Total Keseluruhan: *Rp.${val.fullPrice}*,-\n\n` +
       `> *Catatan*\n> _Draft pemesanan ini digunakan untuk memudahkan Admin untuk mempercepat proses pemesanan._`;

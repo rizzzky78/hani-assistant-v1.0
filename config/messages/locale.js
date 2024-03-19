@@ -337,7 +337,7 @@ Daftar pembayaran akan muncul jika terdapat Pelanggan yang melakukan transaksi/u
 > -akhir pesan-`,
   notification_SendingInvoice: `Mengirimkan Invoice ke Pelanggan...`,
   notification_SuccessSendInvoice: `Sukses mengirimkan Invoice ke Pelanggan!
-? -akhir pesan-`,
+> -akhir pesan-`,
 };
 
 module.exports = { commonCustomerRegularMessage, commonAdminRegularMessage };
