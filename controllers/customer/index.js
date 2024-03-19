@@ -306,7 +306,7 @@ class Customer {
       status: "pending",
       metadata: {
         hashId: IDGenerator.generateRandom(8),
-        totalExactPrice: exactPrice,
+        totalExactPrice: purchasesData.data.totalExactPrice,
         expedition: purchasesData.data.expedition,
       },
       data: purchasesData,
