@@ -94,6 +94,7 @@ class AdminInterface {
     const {
       status,
       data: {
+        orderType,
         orderId,
         timeStamp,
         data: {
@@ -104,11 +105,8 @@ class AdminInterface {
           totalWeight,
           totalExactPrice,
           orderer: [ordrName, ordrPhone, ordrHniId],
-          expedition: { service, description, fees, etd },
-          recipient: {
-            metadata: [recName, recPhone, recHniId],
-            fullAddress,
-          },
+          expedition,
+          recipient,
         },
       },
     } = orders;
@@ -127,9 +125,9 @@ class AdminInterface {
       pricesProduct: totalPrice.toLocaleString("id-ID"),
       fullPrice: totalExactPrice.toLocaleString("id-ID"),
     };
-    const [prov, district, subDist, postalCode] = fullAddress;
+    const stateOrderDropship = orderType === "dropship";
 
-    const caption =
+    let caption =
       `--------- *Pemesanan*\n\n` +
       `ID Pemesanan: *${orderId}*\n` +
       `Waktu Dipesan: *${timeStamp}*\n` +
@@ -138,29 +136,39 @@ class AdminInterface {
       `---- *Pemesan*\n` +
       `Nama: *${ordrName}*\n` +
       `No. telp: *${ordrPhone}*\n` +
-      `HNI ID: *${ordrHniId}*\n\n` +
-      `---- *Penerima*\n` +
-      `Nama: *${recName}*\n` +
-      `No. telp: *${recPhone}*\n` +
-      `HNI ID: *${recHniId ? recHniId : "-"}*\n` +
-      `Alamat Lengkap: *${val.address}*\n\n` +
+      `HNI ID: *${ordrHniId}*\n\n`;
+    if (stateOrderDropship) {
+      const {
+        metadata: [recName, recPhone, recHniId],
+        fullAddress,
+      } = recipient;
+      const [prov, district, subDist, postalCode] = fullAddress;
+      const { service, description, fees, etd } = expedition;
+      caption +=
+        `---- *Penerima*\n` +
+        `Nama: *${recName}*\n` +
+        `No. telp: *${recPhone}*\n` +
+        `HNI ID: *${recHniId ? recHniId : "-"}*\n` +
+        `Alamat Lengkap: *${val.address}*\n\n` +
+        `---- *Ekspedisi*\n` +
+        `Kurir: *JNE*\n` +
+        `Service: *${service} - ${description}*\n` +
+        `Total Estimasi Berat Produk: *${val.weights}kg*\n` +
+        `Tujuan Kota/Kabupaten: *${district}*\n` +
+        `Kode Pos: *${postalCode}*\n` +
+        `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n` +
+        `Estimasi Sampai: *${etd} hari*\n\n`;
+    }
+    caption +=
       `---- *List Produk Yang Dipesan*\n` +
-      `${val.products}\n\n` +
-      `---- *Ekspedisi*\n` +
-      `Kurir: *JNE*\n` +
-      `Service: *${service} - ${description}*\n` +
-      `Total Estimasi Berat Produk: *${val.weights}kg*\n` +
-      `Tujuan Kota/Kabupaten: *${district}*\n` +
-      `Kode Pos: *${postalCode}*\n` +
-      `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n` +
-      `Estimasi Sampai: *${etd} hari*\n\n` +
-      `--------- *Rekapitulasi Pemesanan*\n` +
+      `${val.products}\n\n``--------- *Rekapitulasi Pemesanan*\n` +
       `Total Item: *${totalItem} item*\n` +
       `Total Poin: *${totalPoin} poin*\n` +
-      `Total Harga Keseluruhan Produk: *Rp.${val.pricesProduct},-*\n` +
-      `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n` +
-      `Total Keseluruhan: *Rp.${val.fullPrice}*,-\n\n` +
-      `> -akhir pesan-`;
+      `Total Harga Keseluruhan Produk: *Rp.${val.pricesProduct},-*\n`;
+    if (stateOrderDropship) {
+      caption += `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n`;
+    }
+    `Total Keseluruhan: *Rp.${val.fullPrice}*,-\n\n` + `> -akhir pesan-`;
     return caption;
   }
 
@@ -205,6 +213,7 @@ class AdminInterface {
     const {
       status,
       data: {
+        orderType,
         orderId,
         timeStamp,
         data: {
@@ -237,8 +246,7 @@ class AdminInterface {
       fullPrice: totalExactPrice.toLocaleString("id-ID"),
     };
 
-    const stateOrderDropship =
-      Object.keys(recipient).length > 0 && Object.keys(expedition).length > 0;
+    const stateOrderDropship = orderType === "dropship";
 
     let caption =
       `--------- *Draft Pemesanan*\n\n` +
@@ -339,8 +347,7 @@ class AdminInterface {
       pricesProduct: Tools.localePrice(totalPrice),
       fullPrice: Tools.localePrice(totalExactPrice),
     };
-    const stateOrderDropship =
-      Object.keys(recipient).length > 0 && Object.keys(expedition).length > 0;
+    const stateOrderDropship = orderType === "dropship";
 
     const captionPayment =
       `*Bukti Pembayaran Dari Pelanggan*\n\n` +

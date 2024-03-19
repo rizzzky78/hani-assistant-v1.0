@@ -369,7 +369,7 @@ class PDF {
       // pdf.setFontSize(8);
       pdf.text(`${v.metadata.info}`, leftMargin, 45, { align: "left" });
 
-      if (Object.keys(v.expedition).length > 0) {
+      if (v.orderType === "dropship") {
         pdf.setFont("helvetica", "bold");
         pdf.text(
           `Ekspedisi - ${v.expedition.code.toUpperCase()} ${

@@ -638,7 +638,7 @@ class CustomerInterface {
       orderType === "dropship"
         ? `Dropship / Dipaket`
         : `Pesan Sekarang Diambil Nanti`;
-    const stateOrderDropship = Object.keys(expedition).length > 0;
+    const stateOrderDropship = orderType === "dropship"
 
     const captionImage =
       `*Bukti Invoice*\n` +
