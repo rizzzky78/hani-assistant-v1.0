@@ -433,6 +433,8 @@ class CustomerInterface {
       orderType === "dropship"
         ? `Dropship / Dipaket`
         : `Pesan Sekarang Diambil Nanti`;
+    const stateDropshipOrder =
+      Object.keys(recipient).length > 0 && Object.keys(expedition).length > 0;
 
     let caption =
       `--------- *Detail Pemesanan*\n\n` +
@@ -444,7 +446,7 @@ class CustomerInterface {
       `Nama: *${ordrName}*\n` +
       `No. telp: *${ordrPhone}*\n` +
       `HNI ID: *${ordrHniId}*\n\n`;
-    if (recipient && expedition) {
+    if (stateDropshipOrder) {
       const {
         metadata: [recName, recPhone, recHniId],
         fullAddress,
@@ -476,14 +478,14 @@ class CustomerInterface {
     caption +=
       `--------- *Total Pembayaran*\n` +
       `Produk: *Rp.${totalPrice.toLocaleString("id-ID")}*\n`;
-    if (expedition) {
+    if (stateDropshipOrder) {
       caption += `Pengiriman: *${Tools.localePrice(expedition.fees)}*\n`;
     }
     caption +=
       `Total Pembayaran: *${Tools.localePrice(totalExactPrice)}*\n\n` +
       `> *Catatan*\n` +
       `> Silahkan periksa kembali data pemesanan, salin dan kirimkan kode konfirmasi pemesanan setelah pesan ini untuk melanjutkan proses pemesananmu. ` +
-      `Jika pemesananmu kurang sesuai, ketik "*batal*" untuk membatalkan pemesanan dan memulai dari awal.`
+      `Jika pemesananmu kurang sesuai, ketik "*batal*" untuk membatalkan pemesanan dan memulai dari awal.`;
     return caption;
   }
 

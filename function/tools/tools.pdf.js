@@ -160,7 +160,7 @@ class PDF {
             v.payment.expFees === 0 ? "-" : Tools.localePrice(v.payment.expFees)
           }`,
           `${
-            v.expedition
+            Object.keys(v.expedition).length > 0
               ? `${v.expedition.code.toUpperCase()} - ${
                   v.expedition.service
                 }\n${v.expedition.receiptNumber}`
@@ -369,7 +369,7 @@ class PDF {
       // pdf.setFontSize(8);
       pdf.text(`${v.metadata.info}`, leftMargin, 45, { align: "left" });
 
-      if (v.expedition) {
+      if (Object.keys(v.expedition).length > 0) {
         pdf.setFont("helvetica", "bold");
         pdf.text(
           `Ekspedisi - ${v.expedition.code.toUpperCase()} ${

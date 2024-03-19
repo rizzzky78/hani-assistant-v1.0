@@ -740,7 +740,7 @@ class Admin {
               product: totalPrice,
               expFees: stateTypeOrder ? expedition.fees : 0,
             },
-            expedition: expedition
+            expedition: stateTypeOrder
               ? { ...expedition, receiptNumber }
               : { receiptNumber },
             products: buckets,
@@ -818,7 +818,7 @@ class Admin {
             ]);
           }
 
-          const [custChanges, ordChanges, approvalOrd] = orderVia
+          const [custChanges, ordChanges, approvalOrd] = orderVia;
           const state = custChanges && ordChanges && approvalOrd ? true : false;
           const objData = {
             custPhoneId: `${phoneNumber}@s.whatsapp.net`,
