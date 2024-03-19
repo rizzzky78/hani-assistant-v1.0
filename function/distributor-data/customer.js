@@ -565,7 +565,7 @@ class CustomerInterface {
       `---- *Rekapitulasi*\n` +
       `Total Harga Produk Yang Dipesan:\n` +
       `*Rp.${totalPrice.toLocaleString("id-ID")},-*\n\n`;
-    if (expedition) {
+    if (Object.keys(expedition).length > 0) {
       const { fees } = expedition;
       caption +=
         `Total Biaya Pengiriman:\n` +
@@ -638,6 +638,7 @@ class CustomerInterface {
       orderType === "dropship"
         ? `Dropship / Dipaket`
         : `Pesan Sekarang Diambil Nanti`;
+    const stateOrderDropship = Object.keys(expedition).length > 0;
 
     const captionImage =
       `*Bukti Invoice*\n` +
@@ -653,7 +654,7 @@ class CustomerInterface {
       `ID Pemesanan: *${orderId}*\n` +
       `ID Transaksi: *${transactionId}*\n` +
       `Tipe Pemesanan: *${stateTypeOrder}*\n`;
-    if (expedition) {
+    if (stateOrderDropship) {
       `Ekspedisi: *${expedition.code.toUpperCase()} - ${
         expedition.description
       }*\n` + `No. Resi: *${expedition.receiptNumber}*\n\n`;

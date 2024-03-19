@@ -17,7 +17,7 @@ class Tools {
    * Map Input data
    * @param { number } num Number input
    * @param { boolean } opt Options, default `false`
-   * @returns { Example<"12.000" | "Rp.12.000"> }
+   * @returns { string }
    */
   static localePrice(num, opt = false) {
     const mapped = num.toLocaleString("id-ID");

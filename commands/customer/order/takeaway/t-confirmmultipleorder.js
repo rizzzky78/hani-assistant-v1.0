@@ -48,7 +48,7 @@ module.exports = {
                     .then(
                       setTimeout(() => {
                         return client.sendMessage(msg.from, {
-                          text: `konfirmasi-pemesanan ${orders.data.orderId}`,
+                          text: `konfirmasi-pembelian ${orders.data.orderId}`,
                         });
                       }, 3000)
                     );

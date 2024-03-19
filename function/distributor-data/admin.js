@@ -237,6 +237,9 @@ class AdminInterface {
       fullPrice: totalExactPrice.toLocaleString("id-ID"),
     };
 
+    const stateOrderDropship =
+      Object.keys(recipient).length > 0 && Object.keys(expedition).length > 0;
+
     let caption =
       `--------- *Draft Pemesanan*\n\n` +
       `ID Pemesanan: *${orderId}*\n` +
@@ -247,7 +250,7 @@ class AdminInterface {
       `Nama: *${ordrName}*\n` +
       `No. telp: *${ordrPhone}*\n` +
       `HNI ID: *${ordrHniId}*\n\n`;
-    if (recipient) {
+    if (stateOrderDropship) {
       const {
         metadata: [recName, recPhone, recHniId],
         fullAddress,
@@ -259,7 +262,7 @@ class AdminInterface {
         `HNI ID: *${recHniId ? recHniId : "-"}*\n` +
         `Alamat Lengkap: *${fullAddress.join(", ")}*\n\n`;
     }
-    if (expedition) {
+    if (stateOrderDropship) {
       const { service, description, fees, etd } = expedition;
       const {
         fullAddress: [prov, district, subDist, postalCode],
@@ -280,7 +283,7 @@ class AdminInterface {
       `Total Item: *${totalItem} item*\n` +
       `Total Poin: *${totalPoin} poin*\n` +
       `Total Harga Keseluruhan Produk: *Rp.${val.pricesProduct},-*\n`;
-    if (expedition) {
+    if (stateOrderDropship) {
       caption += `Biaya Ekspedisi: *Rp.${fees.toLocaleString("id-ID")},-*\n`;
     }
     `Total Keseluruhan: *Rp.${val.fullPrice}*,-\n\n` +
@@ -336,6 +339,8 @@ class AdminInterface {
       pricesProduct: Tools.localePrice(totalPrice),
       fullPrice: Tools.localePrice(totalExactPrice),
     };
+    const stateOrderDropship =
+      Object.keys(recipient).length > 0 && Object.keys(expedition).length > 0;
 
     const captionPayment =
       `*Bukti Pembayaran Dari Pelanggan*\n\n` +
@@ -365,12 +370,12 @@ class AdminInterface {
       `Nama: *${ordrName}*\n` +
       `No. telp: *${ordrPhone}*\n` +
       `HNI ID: *${ordrHniId}*\n\n`;
-    if (recipient && expedition) {
+    if (stateOrderDropship) {
       const {
         metadata: [recName, recPhone, recHniId],
         fullAddress,
       } = recipient;
-      const [[prov, district, subDist, postalCode]] = fullAddress;
+      const [prov, district, subDist, postalCode] = fullAddress;
       const { service, description, fees, etd } = expedition;
       captionOrder +=
         `---- *Penerima*\n` +
@@ -394,7 +399,7 @@ class AdminInterface {
       `Total Item: *${totalItem} item*\n` +
       `Total Poin: *${totalPoin} poin*\n` +
       `Total Harga Keseluruhan Produk: *${val.pricesProduct}*\n`;
-    if (recipient && expedition) {
+    if (stateOrderDropship) {
       captionOrder += `Biaya Ekspedisi: *${Tools.localePrice(
         expedition.fees
       )}*\n`;
