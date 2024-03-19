@@ -638,7 +638,7 @@ class CustomerInterface {
       orderType === "dropship"
         ? `Dropship / Dipaket`
         : `Pesan Sekarang Diambil Nanti`;
-    const stateOrderDropship = orderType === "dropship"
+    const stateOrderDropship = orderType === "dropship";
 
     const captionImage =
       `*Bukti Invoice*\n` +
@@ -655,9 +655,10 @@ class CustomerInterface {
       `ID Transaksi: *${transactionId}*\n` +
       `Tipe Pemesanan: *${stateTypeOrder}*\n`;
     if (stateOrderDropship) {
-      `Ekspedisi: *${expedition.code.toUpperCase()} - ${
-        expedition.description
-      }*\n` + `No. Resi: *${expedition.receiptNumber}*\n\n`;
+      captionInvoice +=
+        `Ekspedisi: *${expedition.code.toUpperCase()} - ${
+          expedition.description
+        }*\n` + `No. Resi: *${expedition.receiptNumber}*\n\n`;
     }
     captionInvoice +=
       `Status: *Selesai/Dikirim*\n\n` +
@@ -667,8 +668,11 @@ class CustomerInterface {
       `HNI ID: *${metadata.hniId}*\n\n` +
       `--------- *Detail Pemesanan*\n` +
       `Produk: ${productList}\n\n` +
-      `Harga Produk: *${v.productPrices}*\n` +
-      `Biaya Pengiriman: *${v.expFees}*\n` +
+      `Harga Produk: *${v.productPrices}*\n`;
+    if (stateOrderDropship) {
+      captionInvoice += `Biaya Pengiriman: *${v.expFees}*\n`;
+    }
+    captionInvoice +=
       `Total Dibayarkan: *${v.totalPrices}*\n\n` +
       `> Kamu dapat melihat detail pemesanan pada file PDF yang terlampir.`;
     return { captionImage, captionInvoice };
