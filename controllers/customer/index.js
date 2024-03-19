@@ -292,8 +292,8 @@ class Customer {
         totalExactPrice: products.accumulativePrice,
         additionalInfo: "Dipesan Takeaway",
         orderer: [metadata.tagName, metadata.phoneNumber, metadata.hniId],
-        expedition: null,
-        recipient: null,
+        expedition: {},
+        recipient: {},
       },
     };
     /**

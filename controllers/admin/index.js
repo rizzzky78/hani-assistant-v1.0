@@ -740,47 +740,85 @@ class Admin {
               product: totalPrice,
               expFees: stateTypeOrder ? expedition.fees : 0,
             },
-            expedition: stateTypeOrder
+            expedition: expedition
               ? { ...expedition, receiptNumber }
-              : null,
+              : { receiptNumber },
             products: buckets,
           };
 
-          const [custChanges, ordChanges, approvalOrd] = await Promise.all([
-            customer.findOneAndUpdate(
-              {
-                "metadata.customerId": custId,
-                "data.purchaseHistory.orderId": orderId,
-              },
-              {
-                $set: {
-                  "data.purchaseHistory.$.isCompleted": true,
-                  "data.purchaseHistory.$.invoices": customerInvoice,
-                  "data.purchaseHistory.$.data.expedition.receiptNumber":
-                    stateTypeOrder ? receiptNumber : "Dipesan Takeaway",
-                  "data.purchaseHistory.$.data.recipient.adminNote": adminNotes
-                    ? adminNotes
-                    : "-",
-                },
-              },
-              { returnDocument: "after" }
-            ),
-            customerOrderData.findOneAndUpdate(
-              { "data.orderId": orderId },
-              {
-                $set: {
-                  status: "completed",
-                  "data.isCompleted": true,
-                  "data.data.expedition.receiptNumber": stateTypeOrder
-                    ? receiptNumber
-                    : "Dipesan Takeaway",
-                },
-              },
-              { returnDocument: "after" }
-            ),
-            approvalOrderData.insertOne(approvalData),
-          ]);
+          const v = {
+            receiptNumber: stateTypeOrder ? receiptNumber : "Dipesan Takeaway",
+          };
 
+          /**
+           * @type { Promise<[customer: import("@interface/customer").Customer, orderData: import("@interface/order-data").CustomerOrderData, approvalData: import("@interface/order-data").ApprovalOrderData]> }
+           */
+          let orderVia;
+          if (stateTypeOrder) {
+            orderVia = await Promise.all([
+              customer.findOneAndUpdate(
+                {
+                  "metadata.customerId": custId,
+                  "data.purchaseHistory.orderId": orderId,
+                },
+                {
+                  $set: {
+                    "data.purchaseHistory.$.isCompleted": true,
+                    "data.purchaseHistory.$.invoices": customerInvoice,
+                    "data.purchaseHistory.$.data.expedition.receiptNumber":
+                      v.receiptNumber,
+                    "data.purchaseHistory.$.data.recipient.adminNote":
+                      adminNotes ? adminNotes : "-",
+                  },
+                },
+                { returnDocument: "after" }
+              ),
+              customerOrderData.findOneAndUpdate(
+                { "data.orderId": orderId },
+                {
+                  $set: {
+                    status: "completed",
+                    "data.isCompleted": true,
+                    "data.data.expedition.receiptNumber": v.receiptNumber,
+                  },
+                },
+                { returnDocument: "after" }
+              ),
+              approvalOrderData.insertOne(approvalData),
+            ]);
+          }
+          if (!stateTypeOrder) {
+            orderVia = await Promise.all([
+              customer.findOneAndUpdate(
+                {
+                  "metadata.customerId": custId,
+                  "data.purchaseHistory.orderId": orderId,
+                },
+                {
+                  $set: {
+                    "data.purchaseHistory.$.isCompleted": true,
+                    "data.purchaseHistory.$.invoices": customerInvoice,
+                    "data.purchaseHistory.$.data.recipient.adminNote":
+                      adminNotes ? adminNotes : "-",
+                  },
+                },
+                { returnDocument: "after" }
+              ),
+              customerOrderData.findOneAndUpdate(
+                { "data.orderId": orderId },
+                {
+                  $set: {
+                    status: "completed",
+                    "data.isCompleted": true,
+                  },
+                },
+                { returnDocument: "after" }
+              ),
+              approvalOrderData.insertOne(approvalData),
+            ]);
+          }
+
+          const [custChanges, ordChanges, approvalOrd] = orderVia
           const state = custChanges && ordChanges && approvalOrd ? true : false;
           const objData = {
             custPhoneId: `${phoneNumber}@s.whatsapp.net`,
