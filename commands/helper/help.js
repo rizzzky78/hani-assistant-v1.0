@@ -37,9 +37,10 @@ module.exports = {
         });
     }
     const captionCmd = instanceCmd
-      .map((v) => {
+      .map((v, idx) => {
         const { key, expectedArgs, exampleArgs, description } = v;
         const captions =
+          `---[${idx + 1}]\n` +
           `Kata Kunci: *${key}*\n` +
           `Format Argumen: *${expectedArgs}*\n` +
           `Contoh Argumen: *${exampleArgs}*\n` +
