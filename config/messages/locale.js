@@ -6,34 +6,37 @@ const commonCustomerRegularMessage = {
 > -akhir pesan-`,
   /** @param { string } tagName */
   greetNewUser: (tagName) =>
-    `Halo ${tagName} 👋, terimakasih telah menghubungi Halal Mart BC Cilacap 3
-Perkenalkan, saya adalah Chatbot HANI asisten pembantu Admin. Saya dapat membantu Kamu dalam berbagai hal seperti:
-- 📒 Mengakses katalog produk (herbal, beverages, dan cosmetics)
+    `Halo ${tagName} 👋, terimakasih telah menghubungi ${
+      (process.env, MARKETPLACE_NAME)
+    }
+Perkenalkan, saya adalah ${
+      process.env.CHATBOT_NAME
+    } asisten pembantu Admin. Saya dapat membantu Kamu dalam berbagai hal seperti:
+- 📒 Mengakses katalog/brosur produk (herbal, beverages, dan cosmetics)
 - 📑 Mengakses informasi detail produk (harga, stok, deskripsi)
 - 🛒 Melakukan pemesanan produk
 
-Untuk memulai silahkan ketik *katalog* untuk mengakses katalog.
-Jika kamu perlu informasi lengkap mengenai chatbot silahkan ketik *bantuan*
+Untuk memulai silahkan ketik "*katalog*" untuk mengakses katalog.
+Jika kamu perlu informasi lengkap mengenai chatbot silahkan ketik "*bantuan*"
 > -akhir pesan-`,
   unauthorizedForAdminOnly: `Kode perintah ini hanya dapat digunakan oleh Admin Chatbot.
 > -akhir pesan-`,
   acessCatalogue: `*Katalog Produk*
-Kamu bisa membuka katalog PDF terlampir atau
+Kamu bisa membuka katalog/brosur PDF terlampir atau
 
-*Mencari Informasi Lengkap Produk*
-- Ketik "*cari <nama produk>*" untuk menampilkan informasi lengkap produk, contoh: "*cari MHS*"
+---- *Mencari Informasi Lengkap Produk*
+Ketik "*cari <nama produk>*" untuk menampilkan informasi lengkap produk, contoh: "*cari MHS*"
 
-*Memesan Produk (Dropshiper/Dipaket)*
-- Ketik "*pesan <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*pesan sarkum # 3*"
+---- *Memesan Produk (Dropshiper/Dipaket)*
+Ketik "*pesan <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*pesan sarkum # 3*"
 
-*Memesan Produk (Beli Sekarang Diambil Nanti)*
-- Ketik "*beli <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*beli sarkum # 3*"
+---- *Memesan Produk (Beli Sekarang Diambil Nanti)*
+Ketik "*beli <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*beli sarkum # 3*"
 
 *Tutorial*
-Jika Kamu masih bingung, ketik "tutorial" untuk melihat tata cara pemesanan.
+Jika Kamu masih bingung, ketik "*tutorial*" untuk melihat video tata cara pemesanan.
   
-> _Halal Mart BC Cilacap 3_
-> _copyright@2024_`,
+> _${process.env.MARKETPLACE_NAME} - copyright@2024_`,
 
   prompt_FillCheckoutOrderForms: `Silahkan isikan secara lengkap dan kirimkan ulang form pemesanan berikut setelah pesan ini. Harap tidak mengubah bentuk/format form pemesanan.`,
   prompt_SentPaymentCode: `Silahkan salin kode bayar, sesuaikan platform pembayaran yang digunakan, dan kirimkan gambar/bukti bayar/transfer dengan caption tersebut, setelah pesan ini.`,
@@ -58,11 +61,17 @@ Gunakan perintah *produk [ID Produk]*, contoh: *produk 123ABC*.
 > -akhir pesan-`,
   invalid_QuerySearchProduct: `Masukan setidaknya 3 huruf dari nama produk yang ingin Kamu cari.
 > -akhir pesan-`,
-  invalid_QueryMultipleOrder: `Untuk memesan produk silahkan ketik *pesan <nama produk> # <jumlah pemesanan>*
-Contoh: *pesan Sarkum # 2*
+  /** @param { "beli" | "pesan" } type */
+  invalid_QueryMultipleOrder: (
+    type
+  ) => `Untuk memesan produk silahkan ketik *pesan <nama produk> # <jumlah pemesanan>*
+Contoh: *${type} Sarkum # 2*
 > -akhir pesan-`,
-  invalid_QueryMulitpleOrderAsIsNaN: `Jumlah pemesanan harus berupa angka positif.
-Contoh: *pesan Sarkum # 3*
+  /** @param { "beli" | "pesan" } type */
+  invalid_QueryMulitpleOrderAsIsNaN: (
+    type
+  ) => `Jumlah pemesanan harus berupa angka positif.
+Contoh: *${type} Sarkum # 3*
 > -akhir pesan-`,
   invalid_QueryFormsAsEmpty: `Mohon isikan form secara lengkap, harap tidak mengubah format/bentuk form pemesanan.
 > -akhir pesan-`,
@@ -119,6 +128,7 @@ Mohon tunggu hingga Admin memverifikasi/mengkonfirmasi dan melampirkan pemesanan
 > -akhir pesan-`,
   invalid_HhniIdIsNotAddedYet: `Kamu belum menambahkan HNI ID, ketik "*hniid <NOMOR HNI ID>* untuk menambahkan.
 Contoh: "*hniid 0123456*"`,
+  invalid_OrderIsAlreadyOngoing: `Pesanan Kamu sebelumnya belum selesai, tunggu hingga pesanan dikonfirmasi Admin.`,
 
   /* Not Found Message */
   notFound_CustomerHasNeverOrder: `Kamu belum pernah melakukan pemesanan sebelumnya, kamu dapat memesan dengan cara ketik "*pesan <nama produk> # <jumlah pemesanan>*".

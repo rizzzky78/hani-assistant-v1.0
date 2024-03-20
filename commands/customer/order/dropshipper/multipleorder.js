@@ -24,11 +24,13 @@ module.exports = {
       args.join(" ").split("#")
     );
     if (!productName || !qty) {
-      return msg.reply(commonMessage("invalid_QueryMultipleOrder"));
+      return msg.reply(commonMessage("invalid_QueryMultipleOrder")("pesan"));
     }
     if (productName && qty) {
       if (isNaN(parseInt(qty)) || parseInt(qty) < 0) {
-        return msg.reply(commonMessage("invalid_QueryMulitpleOrderAsIsNaN"));
+        return msg.reply(
+          commonMessage("invalid_QueryMulitpleOrderAsIsNaN")("pesan")
+        );
       }
       client
         .sendMessage(msg.from, {
@@ -44,7 +46,7 @@ module.exports = {
             .then(async ({ status }) => {
               if (!status) {
                 return msg.reply(
-                  "Pesanan Kamu sebelumnya belum selesai, tunggu hingga pesanan dikonfirmasi Admin."
+                  commonMessage("invalid_OrderIsAlreadyOngoing")
                 );
               } else {
                 await Moderation.searchProductByTitle(productName).then(

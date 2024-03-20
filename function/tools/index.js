@@ -4,6 +4,7 @@ const RajaOngkir = require("./tools.rajaongkir");
 const Converter = require("./tools.converter");
 const Validation = require("./tools.validation");
 const Tools = require("./tools.general");
+const UserInstance = require("./tools.user");
 
 module.exports = {
   IDGenerator,
@@ -12,4 +13,5 @@ module.exports = {
   Tools,
   RajaOngkir,
   PDF,
+  UserInstance,
 };
