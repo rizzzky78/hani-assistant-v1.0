@@ -40,10 +40,10 @@ module.exports = {
       .map((v, idx) => {
         const { key, expectedArgs, exampleArgs, description } = v;
         const captions =
-          `---[${idx + 1}]\n` +
+          `----[ ${idx + 1} ]\n` +
           `Kata Kunci: *${key}*\n` +
           `Format Argumen: *${expectedArgs}*\n` +
-          `Contoh Argumen: *${exampleArgs}*\n` +
+          `Contoh Argumen: *${exampleArgs.trim()}*\n` +
           `Deskripsi: ${description}`;
         return captions;
       })
