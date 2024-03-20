@@ -13,13 +13,19 @@ module.exports = {
   exampleArgs: "-",
   description: `Fitur pembantu Admin/Customer dalam menggunakan Chatbot.`,
   callback: async ({ msg, client, args, prefix }) => {
+    const [selection] = Tools.arrayModifier("l", args);
+    const typeCmd = selection
+      ? selection === "admin"
+        ? "admin"
+        : "customer"
+      : "customer";
     /**
      * @type { Array<{ key: string; expectedArgs: string; exampleArgs: string; description: string }> }
      */
     const instanceCmd = [];
     for (const modules in cmdModules) {
       cmdModules[modules]
-        .filter((v) => v.category === "customer")
+        .filter((v) => v.category === typeCmd)
         .sort((a, b) => a.name.localeCompare(b.name))
         .forEach((v) => {
           instanceCmd.push({
@@ -41,6 +47,7 @@ module.exports = {
         return captions;
       })
       .join("\n\n");
+
     const caption =
       `----- *List Kode Perintah dan Deskripsi*\n\n` +
       `${captionCmd}\n\n` +

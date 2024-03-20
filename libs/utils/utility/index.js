@@ -87,8 +87,8 @@ class Utility {
           category: category ? category : "no-category",
           strict: permission ? permission : "unset",
           typeArgs: typeArgs ? typeArgs : "-",
-          expectedArgs: expectedArgs ? expectedArgs : "-",
-          exampleArgs: exampleArgs ? exampleArgs : "-",
+          expectedArgs: expectedArgs ? expectedArgs : "",
+          exampleArgs: exampleArgs ? exampleArgs : "",
           description: description ? description : "-",
         });
       privateCmdModules.add(cmdModules);
