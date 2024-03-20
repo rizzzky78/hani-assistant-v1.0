@@ -36,8 +36,8 @@ module.exports = {
           )
         ) {
           return client.sendMessage(msg.from, {
-            document: readFileSync("./assets/pdf/main-catalogue.pdf"),
-            fileName: `Katalog Produk HNI HPAI`,
+            document: readFileSync("./assets/pdf/brosur-catalogue.pdf"),
+            fileName: `Brosur Katalog Produk HNI HPAI`,
             mimetype: "application/pdf",
             caption: commonMessage("acessCatalogue"),
           });

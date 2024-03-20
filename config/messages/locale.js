@@ -6,12 +6,8 @@ const commonCustomerRegularMessage = {
 > -akhir pesan-`,
   /** @param { string } tagName */
   greetNewUser: (tagName) =>
-    `Halo ${tagName} 👋, terimakasih telah menghubungi ${
-      (process.env, MARKETPLACE_NAME)
-    }
-Perkenalkan, saya adalah ${
-      process.env.CHATBOT_NAME
-    } asisten pembantu Admin. Saya dapat membantu Kamu dalam berbagai hal seperti:
+    `Halo ${tagName} 👋, terimakasih telah menghubungi ${process.env.MARKETPLACE_NAME}
+Perkenalkan, saya adalah ${process.env.CHATBOT_NAME} asisten pembantu Admin. Saya dapat membantu Kamu dalam berbagai hal seperti:
 - 📒 Mengakses katalog/brosur produk (herbal, beverages, dan cosmetics)
 - 📑 Mengakses informasi detail produk (harga, stok, deskripsi)
 - 🛒 Melakukan pemesanan produk
@@ -27,14 +23,14 @@ Kamu bisa membuka katalog/brosur PDF terlampir atau
 ---- *Mencari Informasi Lengkap Produk*
 Ketik "*cari <nama produk>*" untuk menampilkan informasi lengkap produk, contoh: "*cari MHS*"
 
----- *Memesan Produk (Dropshiper/Dipaket)*
+---- *Memesan Produk* (Dropshiper/Dipaket)
 Ketik "*pesan <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*pesan sarkum # 3*"
 
----- *Memesan Produk (Beli Sekarang Diambil Nanti)*
+---- *Memesan Produk* (Beli Sekarang Diambil Nanti)
 Ketik "*beli <nama produk> # <jumlah>*" untuk menambahkan ke keranjang pemesanan, contoh: "*beli sarkum # 3*"
 
 *Tutorial*
-Jika Kamu masih bingung, ketik "*tutorial*" untuk melihat video tata cara pemesanan.
+Jika Kamu masih bingung, ketik "*tutorial*" untuk melihat video tata cara pemesanan, ketik "*bantuan*" untuk melihat fitur-fitur apa saja yang terdapat pada Chatbot ini.
   
 > _${process.env.MARKETPLACE_NAME} - copyright@2024_`,
 
