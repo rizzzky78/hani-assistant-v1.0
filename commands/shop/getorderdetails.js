@@ -33,11 +33,18 @@ module.exports = {
               return msg.reply("ID Invoice tidak ditemukan!");
             } else {
               await Moderation.getOrdersDetails(invoiceId).then(
-                (orderDetails) => {
+                async (orderDetails) => {
                   const [orderData, paymentData, approvalData] = orderDetails;
+                  const { base64: invoiceImg } =
+                    await Moderation.getKeyPairImages(
+                      orderData.data.invoices.images
+                    );
                   client
                     .sendMessage(msg.from, {
-                      text: CustomerInterface.mapCustomerOrderDetails({
+                      image: await Converter.base64ToBufferConverter(
+                        invoiceImg
+                      ),
+                      caption: CustomerInterface.mapCustomerOrderDetails({
                         orders: orderData,
                       }),
                     })
