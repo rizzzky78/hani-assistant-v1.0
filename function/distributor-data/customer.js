@@ -235,9 +235,10 @@ class CustomerInterface {
       `🔖 Poin/pcs : ${poin} poin\n` +
       `📦 Netto/pcs : ${weight}gr\n` +
       `📑 Deskripsi :\n${description}\n\n` +
-      `------ Catatan\n` +
-      `Untuk memesan produk ketik "*pesan <nama produk*>"\n` +
-      `Contoh: *pesan ${title}*\n`;
+      `> *Catatan:*\n` +
+      `> Untuk memesan produk (dropship) silahkan ketik dengan format *pesan <nama produk> # <jml pemesanan>*, Contoh: *pesan MHS # 3*\n` +
+      `> Untuk memesan produk (bayar sekarang diambil nanti) silahkan ketik dengan format *beli <nama produk> # <jml pemesanan>*, Contoh: *beli MHS # 5*`
+      
     return {
       /**
        * Product Data Caption

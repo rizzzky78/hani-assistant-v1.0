@@ -24,12 +24,10 @@ module.exports = {
   exampleArgs: "ORD-ID-123ABCD BRI",
   description: `Mengupload bukti bayar/transfer dan meneruskan ke Admin untuk dilakukan verifikasi sebelum pemesanan dikonfirmasi.`,
   callback: async ({ client, msg, args }) => {
-    const [orderId, paymentVia] = Tools.arrayModifier("n", args);
+    const [orderId] = Tools.arrayModifier("n", args);
     const bufferImage =
       (await msg.download("buffer")) ||
       (msg.quoted && (await msg.quoted.download("buffer")));
-    const providers = paymentPlatform.map((v) => v.provider);
-    const matchExactPayment = providers.includes(paymentVia.toUpperCase());
 
     if (!bufferImage || !orderId) {
       return msg.reply(commonMessage("invalid_QueryPaymentCode"));
