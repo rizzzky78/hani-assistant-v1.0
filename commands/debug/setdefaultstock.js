@@ -37,7 +37,7 @@ module.exports = {
         return msg.reply(`Succes, inserted ${insertedCount} product.`);
       });
     }
-    if (selection === "rseset") {
+    if (selection === "reset") {
       await product.deleteMany({}).then(({ deletedCount }) => {
         return msg.reply(`Succes, deleted ${deletedCount} product`);
       });

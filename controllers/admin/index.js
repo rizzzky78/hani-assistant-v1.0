@@ -83,6 +83,7 @@ class Moderation {
         price: parseInt(price),
         memberPrice: parseInt(memberPrice),
         stock: parseInt(stock),
+        sold: 0,
         poin: parseInt(poin),
         weight: parseInt(weight),
         image: await Converter.bufferToBase64Converter(image),
