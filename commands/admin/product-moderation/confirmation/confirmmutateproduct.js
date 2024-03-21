@@ -13,7 +13,7 @@ const {
  */
 module.exports = {
   aliases: ["konfirmasi-uploadproduk", "forms"],
-  category: "admin",
+  category: "forms",
   permission: "admin",
   typeArgs: "forms",
   expectedArgs: "<QUERY FORMS>",

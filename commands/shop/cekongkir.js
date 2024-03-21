@@ -8,7 +8,7 @@ const { RajaOngkir, Tools } = require("@function/tools");
  */
 module.exports = {
   aliases: ["cekongkir", "cek"],
-  category: "general",
+  category: "admin",
   permission: "common",
   typeArgs: "query",
   expectedArgs: "<QUERY FORMS>",

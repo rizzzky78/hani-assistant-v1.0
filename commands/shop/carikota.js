@@ -7,7 +7,7 @@ const { RajaOngkir } = require("@function/tools");
  */
 module.exports = {
   aliases: ["carikota"],
-  category: "general",
+  category: "customer",
   permission: "common",
   typeArgs: "query",
   expectedArgs: "<QUERY>",

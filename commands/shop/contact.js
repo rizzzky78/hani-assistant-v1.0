@@ -5,7 +5,11 @@ const { adminData } = require("@config/settings").metadata;
  */
 module.exports = {
   aliases: ["admin"],
-  category: "general",
+  category: "customer",
+  permission: "common",
+  typeArgs: "none",
+  expectedArgs: "none",
+  exampleArgs: "-",
   description: `Mengirim kontak Admin untuk keperluan tertentu.`,
   callback: async ({ client, msg }) => {
     const adminContacts = adminData.map((data) => ({

@@ -10,7 +10,7 @@ const logger = require("@libs/utils/logger");
  */
 module.exports = {
   aliases: ["form"],
-  category: "customer",
+  category: "forms",
   permission: "common",
   typeArgs: "forms",
   expectedArgs: "<QUERY FORMS>",

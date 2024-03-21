@@ -13,7 +13,7 @@ const {
  */
 module.exports = {
   aliases: ["takeaway"],
-  category: "admin",
+  category: "forms",
   permission: "admin",
   typeArgs: "forms",
   expectedArgs: "<QUERY FORMS>",

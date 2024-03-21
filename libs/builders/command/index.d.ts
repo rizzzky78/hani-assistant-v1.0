@@ -37,7 +37,7 @@ export class ICommand {
    * @description Command category (will use to build help command)
    * @example category: 'downloader'
    */
-  category: string;
+  category: "admin" | "customer" | "forms";
 
   /**
    * @required

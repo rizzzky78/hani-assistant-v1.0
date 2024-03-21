@@ -20,7 +20,7 @@ module.exports = {
   category: "customer",
   permission: "common",
   typeArgs: "query",
-  expectedArgs: "<ORD-ID-XXX VIA>",
+  expectedArgs: "<ORD-ID-XXX>",
   exampleArgs: "ORD-ID-123ABCD BRI",
   description: `Mengupload bukti bayar/transfer dan meneruskan ke Admin untuk dilakukan verifikasi sebelum pemesanan dikonfirmasi.`,
   callback: async ({ client, msg, args }) => {

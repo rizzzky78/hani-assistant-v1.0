@@ -14,7 +14,7 @@ module.exports = {
   typeArgs: "none",
   expectedArgs: "none",
   exampleArgs: "-",
-  description: `Mengambil form pemesanan produk untuk melakukan pemesanan.`,
+  description: `Mengkonfirmasi pembelian untuk dilanjutkan ke pembayaran.`,
   callback: async ({ client, msg }) => {
     client
       .sendMessage(msg.from, {
