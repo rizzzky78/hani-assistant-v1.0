@@ -86,7 +86,7 @@ module.exports = {
                                         //   "./assets/video/howto-upload.mp4"
                                         // ),
                                         // gifPlayback: true,
-                                        caption: commonMessage(
+                                        text: commonMessage(
                                           "prompt_SentPaymentCode"
                                         ),
                                       })
