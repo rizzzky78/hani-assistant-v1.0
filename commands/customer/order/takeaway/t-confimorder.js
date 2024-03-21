@@ -82,10 +82,10 @@ module.exports = {
                                   setTimeout(() => {
                                     client
                                       .sendMessage(msg.from, {
-                                        video: readFileSync(
-                                          "./assets/video/howto-upload.mp4"
-                                        ),
-                                        gifPlayback: true,
+                                        // video: readFileSync(
+                                        //   "./assets/video/howto-upload.mp4"
+                                        // ),
+                                        // gifPlayback: true,
                                         caption: commonMessage(
                                           "prompt_SentPaymentCode"
                                         ),
@@ -93,7 +93,7 @@ module.exports = {
                                       .then(
                                         setTimeout(() => {
                                           return client.sendMessage(msg.from, {
-                                            text: `bayar ${orders.data.orderId} VIA`,
+                                            text: `bayar ${orders.data.orderId}`,
                                           });
                                         }, 5000)
                                       );

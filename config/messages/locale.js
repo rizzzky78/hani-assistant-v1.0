@@ -35,7 +35,7 @@ Jika Kamu masih bingung, ketik "*tutorial*" untuk melihat video tata cara pemesa
 > _${process.env.MARKETPLACE_NAME} - copyright@2024_`,
 
   prompt_FillCheckoutOrderForms: `Silahkan isikan secara lengkap dan kirimkan ulang form pemesanan berikut setelah pesan ini. Harap tidak mengubah bentuk/format form pemesanan.`,
-  prompt_SentPaymentCode: `Silahkan salin kode bayar, sesuaikan platform pembayaran yang digunakan, dan kirimkan gambar/bukti bayar/transfer dengan caption tersebut, setelah pesan ini.`,
+  prompt_SentPaymentCode: `Silahkan salin kode bayar, dan kirimkan gambar/bukti bayar/transfer dengan caption kode bayar, setelah pesan ini.`,
   prompt_ResubmitConfirmationCode: `Kamu sebelumnya telah mengrimkan form pemesanan, silahkan salin dan kirimkan pesan berikut setelah pesan ini untuk meneruskan pesananmu ke Admin.`,
   prompt_SendOrderConfirmationCode: `Silahkan salin dan kirim kode pesan setelah pesan ini untuk meneruskan pemesanan ke Admin (agar segera disiapkan) dan melanjutkan ke pembayaran. Mohon periksa kembali data pemesananmu sebelum mengkonfirmasi pemesanan.`,
 

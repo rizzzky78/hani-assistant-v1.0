@@ -31,7 +31,7 @@ module.exports = {
     const providers = paymentPlatform.map((v) => v.provider);
     const matchExactPayment = providers.includes(paymentVia.toUpperCase());
 
-    if (!bufferImage || !orderId || !paymentVia || !matchExactPayment) {
+    if (!bufferImage || !orderId) {
       return msg.reply(commonMessage("invalid_QueryPaymentCode"));
     } else {
       client
@@ -72,7 +72,7 @@ module.exports = {
                       }
                       await Customer.uploadPaymentProof(msg.senderNumber, {
                         orderId,
-                        via: paymentVia,
+                        via: "TRANSFER",
                         image: bufferImage,
                       }).then(({ status, data: { payments, orders } }) => {
                         if (status === "failed") {

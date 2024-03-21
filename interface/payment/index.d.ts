@@ -6,7 +6,8 @@ export type PaymentProvider =
   | "DANA"
   | "QRIS"
   | "BSI"
-  | "UNPAID";
+  | "UNPAID"
+  | "TRANSFER"
 
 export type CustomerPaymentProofDto = {
   orderId: string;
