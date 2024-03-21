@@ -146,6 +146,10 @@ Jika produk terdapat pada Katalog dan tetap  tidak bisa ditemukan, silahkan hubu
   notFound_OrderId: (orderId) =>
     `ID Pemesanan: *${orderId}* yang Kamu masukan tidak valid atau tidak dapat ditemukan.
 > -akhir pesan-`,
+  /** @param { string } invoiceId */
+  notFound_InvoceId: (invoiceId) =>
+    `ID Invoice *${invoiceId}* tidak ditemukan!.
+> -akhir pesan-`,
   notFound_CustomerHasEmptyBuckets: `Kamu tidak memiliki produk pada keranjang pemesanan, silahkan tambah produk kedalam keranjang dengan cara:
 ketik *pesan <nama produk> # <jumlah pemesanan>*
 Contoh: *pesan sarkum # 2*

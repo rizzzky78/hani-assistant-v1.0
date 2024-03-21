@@ -779,6 +779,7 @@ class Admin {
                   $set: {
                     status: "completed",
                     "data.isCompleted": true,
+                    "data.data.invoices": customerInvoice,
                     "data.data.expedition.receiptNumber": v.receiptNumber,
                   },
                 },
@@ -810,6 +811,7 @@ class Admin {
                   $set: {
                     status: "completed",
                     "data.isCompleted": true,
+                    "data.data.invoices": customerInvoice,
                   },
                 },
                 { returnDocument: "after" }

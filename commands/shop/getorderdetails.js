@@ -30,14 +30,14 @@ module.exports = {
         await Moderation.validateInvoiceId(invoiceId)
           .then(async (isInvoice) => {
             if (!isInvoice) {
-              return msg.reply("ID Invoice tidak ditemukan!");
+              return msg.reply(commonMessage("notFound_InvoceId")(invoiceId));
             } else {
               await Moderation.getOrdersDetails(invoiceId).then(
                 async (orderDetails) => {
                   const [orderData, paymentData, approvalData] = orderDetails;
                   const { base64: invoiceImg } =
                     await Moderation.getKeyPairImages(
-                      orderData.data.invoices.images
+                      approvalData.invoice.images
                     );
                   client
                     .sendMessage(msg.from, {

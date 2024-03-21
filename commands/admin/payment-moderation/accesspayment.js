@@ -47,7 +47,9 @@ module.exports = {
                 }
                 await Moderation.getCustomerPaymentProof(transactionId).then(
                   async (payments) => {
-                    const { base64 } = await Moderation.getKeyPairImages();
+                    const { base64 } = await Moderation.getKeyPairImages(
+                      payments.payment.image
+                    );
                     return client.sendMessage(msg.from, {
                       image: await Converter.base64ToBufferConverter(base64),
                       caption: AdminInterface.mapCustomerPaymentProof({
