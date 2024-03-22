@@ -68,6 +68,7 @@ export type MongoDBConfig = {
 export type Metadata = {
   marketPlaceName: string;
   organizationName: string;
+  runMode: "DEVELOPMENT" | "PRODUCTION";
   /**
    * Super Admin
    */

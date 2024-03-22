@@ -43,6 +43,7 @@ const mongoConfig = {
 const metadata = {
   marketPlaceName: process.env.MARKETPLACE_NAME,
   organizationName: process.env.ORGANIZATION_NAME,
+  runMode: process.env.MODE,
   superAdmin: {
     userName: process.env.SUPER_ADMIN_NAME,
     phoneNumber: process.env.SUPER_ADMIN_PHONE,

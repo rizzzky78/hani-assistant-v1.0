@@ -60,7 +60,7 @@ Gunakan perintah *produk [ID Produk]*, contoh: *produk 123ABC*.
   /** @param { "beli" | "pesan" } type */
   invalid_QueryMultipleOrder: (
     type
-  ) => `Untuk memesan produk silahkan ketik *pesan <nama produk> # <jumlah pemesanan>*
+  ) => `Untuk memesan produk silahkan ketik *${type} <nama produk> # <jumlah pemesanan>*
 Contoh: *${type} Sarkum # 2*
 > -akhir pesan-`,
   /** @param { "beli" | "pesan" } type */
