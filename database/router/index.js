@@ -23,6 +23,7 @@ const collections = {
     collection.payment.customerPaymentProof
   ),
   imageData: Database.collection(collection.main.images),
+  userState: Database.collection(collection.customerRegardsData),
 };
 
-module.exports = { collections };
+module.exports = { collections }; //
