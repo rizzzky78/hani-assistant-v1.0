@@ -8,7 +8,8 @@ const {
     product,
   },
 } = require("@database/router");
-const { writeFileSync } = require("fs");
+const { Tools } = require("@function/tools");
+const { writeFileSync, readFileSync } = require("fs");
 
 /**
  * @memberof Customer
@@ -18,11 +19,25 @@ module.exports = {
   aliases: ["code-stagging"],
   waitMessage: "Wait...",
   callback: async function ({ client, command, msg, args }) {
-    const { data: products } = await Moderation.getAllProduct();
-    writeFileSync(
-      "./assets/json/static/stagging.products.json",
-      JSON.stringify(products, null, 2)
-    );
-    return msg.reply("Success!");
+    const [selection] = Tools.arrayModifier("n", args);
+    if (selection === "0") {
+      /**
+       * @type { import("@interface/product").Product[] }
+       */
+      const productsData = JSON.parse(
+        readFileSync("./assets/json/static/stagging.products.json", "utf-8")
+      );
+      await product.insertMany(productsData).then(({ insertedCount }) => {
+        return msg.reply(`Sukses, insserted ${insertedCount} product.`);
+      });
+    }
+    if (selection === "1") {
+      const products = await product.find().toArray();
+      writeFileSync(
+        "./assets/json/static/stagging.products.json",
+        JSON.stringify(products, null, 2)
+      );
+      return msg.reply(`Sucess, count ${products.length}`);
+    }
   },
 };
