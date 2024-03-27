@@ -12,13 +12,19 @@ Lightweight, Customizable WhatsApp Bot
 
 </div>
 
-## ✨ Highlights Feature
+## Library Used
 
--   Written in [Javascript](https://www.javascript.com).
--   Has a plugin that makes it easier to condition the user.
--   Easy to maintenace without turning off the bot (hot reload).
--   Made with [Baileys - Multi Device](https://github.com/adiwajshing/Baileys/).
-
+-   @adiwajshing/baileys (redefined)
+-   @adiwajshing/keyed-db
+-   mongodb
+-   axios
+-   chalk
+-   cron
+-   crypto-random-string
+-   jspdf
+-   module-alias
+-   winston
+  
 ---
 
 ## 📝 Admin Features (strict)
@@ -45,9 +51,119 @@ Lightweight, Customizable WhatsApp Bot
 
 ## 💿 Installation
 
--   Change filename config.json.example to config.json then,
+-   Install the dependency module (required)
+```cmd
+$ npm install
+```
+-   Install Nodemon globaly for development mode (optional)
+```cmd
+$ npm install nodemon -g
+```
+-   Install PM2 globaly for run in production mode (optional)
+```cmd
+$ npm install -g pm2
+```
+-   Create a mongodb atlas account and clusters, [see at youtube](https://www.youtube.com/results?search_query=how+to+create+mongodb+atlas+account)
+-   Open `.ENV file` in root aplication, heres the ENV fields look like
+```env
+# CONFIGURATION
 
--   Termux (if you are not using termux, skip this step)
+# MODE = DEVELOPMENT / PRODUCTION , switch the run mode
+MODE = DEVELOPMENT
+
+# MongoDB Atlas URI, place your mongodb uri in here
+MONGODB_URI = YOUR_MONGODB_URI
+
+# bellow can be modified
+# DEV: Chatbot-Development
+# PROD: Halal-Mart-BC-Cilacap-3-2023
+DB_NAME = Chatbot-Development
+
+RAJA_ONGKIR_APIKEY = YOUR_RAJA_ONGKIR_APIKEY
+
+# METADATA
+
+# Session Developer, can be modified
+SESSION_DEV = Developers
+# Session Production, can be modified
+SESSION_PROD = HalalMartBC3
+
+# Chatbot Name, can be modified
+CHATBOT_NAME = Chatbot HANI
+# Marketplace Name, can be modified
+MARKETPLACE_NAME = Halal Mart BC Cilacap 3
+# Organization Name, can be modified
+ORGANIZATION_NAME = HNI HPAI
+
+# SUPER ADMIN, the contact for chatbot to sent the forwarded orders data
+SUPER_ADMIN_NAME = Rizky
+SUPER_ADMIN_PHONE = 6281329585825
+SUPER_ADMIN_ID = 6281329585825@s.whatsapp.net
+
+# COMMON ADMIN
+ADMIN_1_NAME = Rizky Example
+ADMIN_1_PHONE = 6281329585825
+ADMIN_1_PHONE_ID = 6281329585825@s.whatsapp.net
+ADMIN_1_ROLE = Owner Marketplace
+
+ADMIN_2_NAME = Example Admin
+ADMIN_2_PHONE = 6281329585825
+ADMIN_2_PHONE_ID = 6281329585825@s.whatsapp.net
+ADMIN_2_ROLE = Developer Chatbot
+
+# Group Metadata, a group id that can override forwarded orders instead sent to super admin.
+# Yet, you still need to modify changes at ./config/settings/index.js and the change super admin to this env var
+GROUP_ID_ONGOING_ORDERS = xxx@g.us.whatsapp.net
+GROUP_ID_TRANSACTION = xxx@g.us.whatsapp.net
+GROUP_ID_COMPLETED_ORDERS = xxx@g.us.whatsapp.net
+
+# List Payment, bellow can be modified, do not delete, you can modify the array payment at ./config/settings/index.js
+PAYMENT_1_PROVIDER = BSI
+PAYMENT_1_KEY = 081238392789
+PAYMENT_1_ON_BEHALF = Rzky
+
+PAYMENT_2_PROVIDER = BRI
+PAYMENT_2_KEY = 081238392789
+PAYMENT_2_ON_BEHALF = Rzky
+
+PAYMENT_3_PROVIDER = GOPAY
+PAYMENT_3_KEY = 081238392789
+PAYMENT_3_ON_BEHALF = Rzky
+
+PAYMENT_4_PROVIDER = BCA
+PAYMENT_4_KEY = 081238392789
+PAYMENT_4_ON_BEHALF = Rzky
+
+PAYMENT_5_PROVIDER = DANA
+PAYMENT_5_KEY = 081238392789
+PAYMENT_5_ON_BEHALF = Rzky
+```
+-   Run the app using command
+```cmd
+$ node app.js
+```
+-   Scan the QR to login
+-   Wait until the app configure the login state (eta 2-5 minutes), then close the app using key `CTRL + C` in terminal to terminate app
+-   Login successful, go to the next step
+
+---
+
+## PM2 Link (for production mode)
+You can link PM2 using public and private key from official website [PM2 Keymetrics](https://pm2.keymetrics.io/)
+-  Go to App [PM2 IO](https://app.pm2.io/)
+-  Create buckets
+-  Copy the public and private key
+-  Paste it to terminal
+
+---
+
+## Run in Development Mode
+Using command
+```cmd
+$ npm run dev
+```
+
+---
 
 ```cmd
 $ pkg install git sqlite python make -y
