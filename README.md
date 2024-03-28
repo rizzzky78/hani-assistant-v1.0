@@ -7,7 +7,6 @@ Lightweight, Customizable WhatsApp Bot
 
 <p align="center">
   <a href="https://github.com/LoL-Human"><img title="Author" src="https://img.shields.io/badge/Author-Rizky-blueviolet.svg?style=for-the-badge&logo=github" /></a>
-  <a href="https://github.com/LoL-Human"><img title="Author" src="https://img.shields.io/badge/Author-Rizky-blueviolet.svg?style=for-the-badge&logo=github" /></a>
 </p>
 
 ## [![JavaScript](https://img.shields.io/badge/JavaScript-d6cc0f?style=for-the-badge&logo=javascript&logoColor=white)](https://www.javascript.com) [![NodeJS](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/) [![MongoDB](https://img.shields.io/badge/MongoDB-000000?style=for-the-badge&logo=MongoDB&logoColor=green)](https://www.mongodb.com)
