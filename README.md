@@ -1,11 +1,8 @@
 <div align="center">
 <img src="https://raw.githubusercontent.com/rizzzky78/rizzzkyRepo/main/picture/Chatbot%20HANI%20BC%20Cilacap%203.png" width="150" height="150" border="0" alt="PFP">
-<img src="https://raw.githubusercontent.com/rizzzky78/rizzzkyRepo/main/picture/Chatbot%20HANI%20BC%20Cilacap%203.png" width="150" height="150" border="0" alt="PFP">
 
 ## Chatbot HANI BC Cilacap 3
 
-## Chatbot HANI BC Cilacap 3
-Lightweight, Customizable WhatsApp Bot
 Lightweight, Customizable WhatsApp Bot
 
 <p align="center">
@@ -14,33 +11,33 @@ Lightweight, Customizable WhatsApp Bot
 </p>
 
 ## [![JavaScript](https://img.shields.io/badge/JavaScript-d6cc0f?style=for-the-badge&logo=javascript&logoColor=white)](https://www.javascript.com) [![NodeJS](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/) [![MongoDB](https://img.shields.io/badge/MongoDB-000000?style=for-the-badge&logo=MongoDB&logoColor=green)](https://www.mongodb.com)
-## [![JavaScript](https://img.shields.io/badge/JavaScript-d6cc0f?style=for-the-badge&logo=javascript&logoColor=white)](https://www.javascript.com) [![NodeJS](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/) [![MongoDB](https://img.shields.io/badge/MongoDB-000000?style=for-the-badge&logo=MongoDB&logoColor=green)](https://www.mongodb.com)
 
 </div>
 
 ## Library Used
 
--   @adiwajshing/baileys (redefined)
--   @adiwajshing/keyed-db
--   mongodb
--   axios
--   chalk
--   cron
--   crypto-random-string
--   jspdf
--   module-alias
--   winston
-  
+- @adiwajshing/baileys (redefined)
+- @adiwajshing/keyed-db
+- mongodb
+- axios
+- chalk
+- cron
+- crypto-random-string
+- jspdf
+- module-alias
+- winston
+
 ---
 
 ## 📝 Admin Features (strict)
 
--   Manage product (access, upload, update/edit, delete)
--   Manage orders (access, accept, reject, send invoices)
--   Get single/all ongoing orders
--   Get single/all transaction proof
--   Get list products
--   Access check shipping cost
+- Manage product (access, upload, update/edit, delete)
+- Manage orders (access, accept, reject, send invoices)
+- Get single/all ongoing orders
+- Get single/all transaction proof
+- Get list products
+- Access check shipping cost
+
 ## Library Used
 
 - @adiwajshing/baileys (redefined)
@@ -68,15 +65,17 @@ Lightweight, Customizable WhatsApp Bot
 ---
 
 ## 📝 Customer Features (individual)
--   Access catalogue
--   Access products information
--   Add product to bucket
--   Make orders (dropship/pickup)
--   Upload payment proof
--   Receive invoices (image and PDF)
--   Access purchase history
--   Access data for completed order
--   Access admin contact
+
+- Access catalogue
+- Access products information
+- Add product to bucket
+- Make orders (dropship/pickup)
+- Upload payment proof
+- Receive invoices (image and PDF)
+- Access purchase history
+- Access data for completed order
+- Access admin contact
+
 ## 📝 Customer Features (individual)
 
 - Access catalogue
@@ -91,20 +90,27 @@ Lightweight, Customizable WhatsApp Bot
 
 ## 💿 Installation
 
--   Install the dependency module (required)
+- Install the dependency module (required)
+
 ```cmd
 $ npm install
 ```
--   Install Nodemon globaly for development mode (optional)
+
+- Install Nodemon globaly for development mode (optional)
+
 ```cmd
 $ npm install nodemon -g
 ```
--   Install PM2 globaly for run in production mode (optional)
+
+- Install PM2 globaly for run in production mode (optional)
+
 ```cmd
 $ npm install -g pm2
 ```
--   Create a mongodb atlas account and clusters, [see at youtube](https://www.youtube.com/results?search_query=how+to+create+mongodb+atlas+account)
--   Open `.ENV file` in root aplication, heres the ENV fields look like
+
+- Create a mongodb atlas account and clusters, [see at youtube](https://www.youtube.com/results?search_query=how+to+create+mongodb+atlas+account)
+- Open `.ENV file` in root aplication, heres the ENV fields look like
+
 ```env
 # CONFIGURATION
 
@@ -178,27 +184,34 @@ PAYMENT_5_PROVIDER = DANA
 PAYMENT_5_KEY = 081238392789
 PAYMENT_5_ON_BEHALF = Rzky
 ```
--   Run the app using command
+
+- Run the app using command
+
 ```cmd
 $ node app.js
 ```
--   Scan the QR to login
--   Wait until the app configure the login state (eta 2-5 minutes), then close the app using key `CTRL + C` in terminal to terminate app
--   Login successful, go to the next step
+
+- Scan the QR to login
+- Wait until the app configure the login state (eta 2-5 minutes), then close the app using key `CTRL + C` in terminal to terminate app
+- Login successful, go to the next step
 
 ---
 
 ## PM2 Link (for production mode)
+
 You can link PM2 using public and private key from official website [PM2 Keymetrics](https://pm2.keymetrics.io/)
--  Go to App [PM2 IO](https://app.pm2.io/)
--  Create buckets
--  Copy the public and private key
--  Paste it to terminal
+
+- Go to App [PM2 IO](https://app.pm2.io/)
+- Create buckets
+- Copy the public and private key
+- Paste it to terminal
 
 ---
 
 ## Run in Development Mode
+
 Using command
+
 ```cmd
 $ npm run dev
 ```
@@ -210,7 +223,7 @@ $ pkg install git sqlite python make -y
 $ npm install sqlite3 --build-from-source --sqlite=/data/data/com.termux/files/usr/bin/sqlite3
 ```
 
--   Installing nodejs package & migrating
+- Installing nodejs package & migrating
 - Install the dependency module (required)
 
 ```cmd
@@ -375,7 +388,7 @@ $ npm run prod
 
 ## Data Structure
 
-The chatbot has static data shape/structure, you can find the `types.d.ts` file in `./interface/...`. But also considering the app controller  to prevent app from crashing.
+The chatbot has static data shape/structure, you can find the `types.d.ts` file in `./interface/...`. But also considering the app controller to prevent app from crashing.
 
 - Customer
 
