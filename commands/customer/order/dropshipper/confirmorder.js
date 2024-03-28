@@ -1,3 +1,4 @@
+// dropship
 const { commonMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
 const {
@@ -6,9 +7,8 @@ const {
 } = require("@function/distributor-data");
 const { Tools } = require("@function/tools");
 const logger = require("@libs/utils/logger");
-const { readFileSync } = require("fs");
 const {
-  metadata: { superAdmin },
+  metadata: { overrideStatus, overrideGroupId, superAdmin },
 } = require("@config/settings");
 
 /**
@@ -59,13 +59,17 @@ module.exports = {
                       commonMessage("notFound_CustomerHasNeverOrder")
                     );
                   } else {
+                    const msgSentId =
+                      overrideStatus === "GROUP"
+                        ? overrideGroupId.ongoingOrders
+                        : superAdmin.phoneId;
                     await Moderation.forwardCustomerOrder(orderId).then(
                       ({ status, orders }) => {
                         if (status === "failed") {
                           return msg.reply(commonMessage("errorMessage"));
                         }
                         client
-                          .sendMessage(superAdmin.phoneId, {
+                          .sendMessage(msgSentId, {
                             text: AdminInterface.mapForwardedCustomerOrderDetails(
                               { orders }
                             ),
@@ -82,10 +86,6 @@ module.exports = {
                                   setTimeout(() => {
                                     client
                                       .sendMessage(msg.from, {
-                                        // video: readFileSync(
-                                        //   "./assets/video/howto-upload.mp4"
-                                        // ),
-                                        // gifPlayback: true,
                                         text: commonMessage(
                                           "prompt_SentPaymentCode"
                                         ),

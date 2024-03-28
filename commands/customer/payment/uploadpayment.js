@@ -1,3 +1,4 @@
+// payment
 const { commonMessage, moderationMessage } = require("@config/messages");
 const { Moderation } = require("@controllers/admin");
 const { Customer } = require("@controllers/customer");
@@ -8,7 +9,7 @@ const {
 const { Tools } = require("@function/tools");
 const logger = require("@libs/utils/logger");
 const {
-  metadata: { superAdmin, paymentPlatform },
+  metadata: { overrideStatus, overrideGroupId, superAdmin },
 } = require("@config/settings");
 
 /**
@@ -76,6 +77,10 @@ module.exports = {
                         if (status === "failed") {
                           return msg.reply(commonMessage("errorMessage"));
                         }
+                        const msgSentId =
+                          overrideStatus === "GROUP"
+                            ? overrideGroupId.ongoingOrders
+                            : superAdmin.phoneId;
                         const { captionPayment, captionOrder } =
                           AdminInterface.mapForwardedCustomerPaymentProofDetails(
                             {
@@ -104,32 +109,29 @@ module.exports = {
                                 .then(
                                   setTimeout(() => {
                                     client
-                                      .sendMessage(superAdmin.phoneId, {
+                                      .sendMessage(msgSentId, {
                                         image: bufferImage,
                                         caption: captionPayment,
                                       })
                                       .then(
                                         setTimeout(() => {
                                           client
-                                            .sendMessage(superAdmin.phoneId, {
+                                            .sendMessage(msgSentId, {
                                               text: captionOrder,
                                             })
                                             .then(
                                               setTimeout(() => {
                                                 client
-                                                  .sendMessage(
-                                                    superAdmin.phoneId,
-                                                    {
-                                                      text: moderationMessage(
-                                                        "prompt_ApproveOrCancelCustomerOrder"
-                                                      ),
-                                                    }
-                                                  )
+                                                  .sendMessage(msgSentId, {
+                                                    text: moderationMessage(
+                                                      "prompt_ApproveOrCancelCustomerOrder"
+                                                    ),
+                                                  })
                                                   .then(
                                                     setTimeout(() => {
                                                       client
                                                         .sendMessage(
-                                                          superAdmin.phoneId,
+                                                          msgSentId,
                                                           {
                                                             text: `terima-pesanan ${payments.metadata.transactionId}`,
                                                           }
@@ -138,7 +140,7 @@ module.exports = {
                                                           setTimeout(() => {
                                                             client
                                                               .sendMessage(
-                                                                superAdmin.phoneId,
+                                                                msgSentId,
                                                                 {
                                                                   text: `batalkan-pesanan ${payments.metadata.transactionId}`,
                                                                 }
