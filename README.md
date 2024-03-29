@@ -468,3 +468,11 @@ function moderationMessage(messageKey) {
 ## End
 
 Special thanks to God, me, and my Computer :)
+
+```mermaid
+graph LR
+A[Square Rect] -- Link text --> B((Circle))
+A --> C(Round Rect)
+B --> D{Rhombus}
+C --> D
+```
