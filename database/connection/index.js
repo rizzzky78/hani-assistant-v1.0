@@ -1,5 +1,7 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
-const { uri } = require("@config/settings").mongoConfig;
+const {
+  mongoConfig: { uri },
+} = require("@config/settings");
 
 const client = new MongoClient(uri, {
   serverApi: {

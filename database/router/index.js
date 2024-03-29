@@ -1,6 +1,8 @@
 const { client } = require("@database/connection");
 
-const { databaseName, collection } = require("@config/settings").mongoConfig;
+const {
+  mongoConfig: { databaseName, collection },
+} = require("@config/settings");
 
 const Database = client.db(databaseName);
 

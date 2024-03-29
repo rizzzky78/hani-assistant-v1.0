@@ -7,3 +7,5 @@ baileys_store.json
 config.json
 database/*.db
 test/
+.env
+store/*.json

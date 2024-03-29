@@ -15905,5 +15905,16 @@
       "cmd": "get-current-product",
       "args": null
     }
+  },
+  {
+    "level": "cmd",
+    "pid": "80b184835384827",
+    "timeStamp": "2024-03-29T11:15:14.592Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "katalog",
+      "args": null
+    }
   }
 ]
