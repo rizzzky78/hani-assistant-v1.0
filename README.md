@@ -145,7 +145,7 @@ SUPER_ADMIN_NAME = Rizky
 SUPER_ADMIN_PHONE = 6281329585825
 SUPER_ADMIN_ID = 6281329585825@s.whatsapp.net
 
-# COMMON ADMIN
+# COMMON ADMIN, same privilege as super admin
 ADMIN_1_NAME = Rizky Example
 ADMIN_1_PHONE = 6281329585825
 ADMIN_1_PHONE_ID = 6281329585825@s.whatsapp.net
@@ -205,7 +205,6 @@ You can link PM2 using public and private key from official website [PM2 Keymetr
 - Copy the public and private key
 - Paste it to terminal
 
----
 
 ## Run in Development Mode
 
@@ -217,12 +216,6 @@ $ npm run dev
 
 ---
 
-```cmd
-$ pkg install git sqlite python make -y
-$ npm install sqlite3 --build-from-source --sqlite=/data/data/com.termux/files/usr/bin/sqlite3
-```
-
-- Installing nodejs package & migrating
 - Install the dependency module (required)
 
 ```cmd
@@ -642,6 +635,6 @@ function moderationMessage(messageKey) {
 }
 ```
 
-## Close
+## End
 
 Special thanks to God, me, and my Computer :)

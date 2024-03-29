@@ -5,7 +5,7 @@ const { cooldown } = require("@libs/utils/cooldown");
 const moment = require("moment-timezone");
 const chalk = require("chalk");
 
-const { Tools } = require("@function/tools");
+const { Tools, UserInstance } = require("@function/tools");
 const { commonMessage } = require("@config/messages");
 const { Customer } = require("@controllers/customer");
 const logger = require("@libs/utils/logger");
@@ -84,7 +84,7 @@ async function MessageHandler(client, { messages, type }) {
   if (!getCommand) {
     if (msg.isGroup) return;
     // const statusUser = Tools.checkUser(msg.senderNumber);
-    const statusUser = Tools.checkUser(msg.senderNumber);
+    const statusUser = await UserInstance.checkUser(msg.senderNumber);
     if (!statusUser) {
       return msg.reply(commonMessage("greetNewUser")(msg.pushName));
     }

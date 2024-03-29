@@ -15883,5 +15883,27 @@
       "cmd": "katalog",
       "args": null
     }
+  },
+  {
+    "level": "cmd",
+    "pid": "0f7ded973a5a7d5",
+    "timeStamp": "2024-03-29T08:29:37.070Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "katalog",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "16da149bc300c8b",
+    "timeStamp": "2024-03-29T08:29:59.991Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "get-current-product",
+      "args": null
+    }
   }
 ]
