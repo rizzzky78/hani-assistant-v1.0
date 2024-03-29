@@ -84,7 +84,7 @@ async function MessageHandler(client, { messages, type }) {
   if (!getCommand) {
     if (msg.isGroup) return;
     // const statusUser = Tools.checkUser(msg.senderNumber);
-    const statusUser = await UserInstance.checkUser(msg.senderNumber);
+    const statusUser = UserInstance.checkUser(msg.senderNumber);
     if (!statusUser) {
       return msg.reply(commonMessage("greetNewUser")(msg.pushName));
     }

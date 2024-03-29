@@ -8,7 +8,7 @@ const sessionMode =
  */
 const session = {
   sessionName: sessionMode,
-  userAgent: "Halal-Mart-Cilacap-3",
+  userAgent: process.env.USER_AGENT,
   autoReadMessages: true,
 };
 

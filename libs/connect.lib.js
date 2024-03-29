@@ -50,6 +50,8 @@ async function connect() {
   });
   logger.info(`WA Version: ${version}. Is Latest: ${isLatest}`);
 
+  logger.info(`Using metadata session : ${userAgent}/${sessionName}`);
+
   store.bind(client.ev);
 
   client.ev.on("chats.set", () => {

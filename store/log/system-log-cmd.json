@@ -15916,5 +15916,148 @@
       "cmd": "katalog",
       "args": null
     }
+  },
+  {
+    "level": "cmd",
+    "pid": "6b3abbbffa74cc6",
+    "timeStamp": "2024-03-29T11:39:09.561Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "get-current-product",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "8eb77a40c6aa829",
+    "timeStamp": "2024-03-29T11:40:16.892Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "get-current-product",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "bd25166e07fb4cd",
+    "timeStamp": "2024-03-29T11:47:14.441Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "katalog",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "f6a8d739cc2d8d2",
+    "timeStamp": "2024-03-29T11:50:07.840Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "katalog",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "15be0118796a40f",
+    "timeStamp": "2024-03-29T13:33:04.873Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "mutate-products",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "09d84ff37749cc8",
+    "timeStamp": "2024-03-29T13:34:11.439Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "list-produk",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "88f716808394484",
+    "timeStamp": "2024-03-29T13:43:59.084Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "produk-baru",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "2c533a734d0a53d",
+    "timeStamp": "2024-03-29T13:49:04.943Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "forms",
+      "args": "orms Upload Produk Baru\n------\nNama Produk: HNI Diapers Ukuran S (HNI Popok S)\nKategori: cosmetics\nHarga non member: 26000\nHarga member: 24000\nStok: 50\nPoin: 4\nBerat (gr): 500\nDeskripsi Produk: Fit di badan bayi tidak terlalu ketat, bahan lembut seperti kain, terdapat channelling system untuk mempercepat penyerapan urin.\n\nTersedia juga ukuran:\nS : < 5kg\nM : 5 - 10 kg\nL : 8 - 13 kg"
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "be43f60a8db385f",
+    "timeStamp": "2024-03-29T13:50:23.451Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "forms",
+      "args": "orms Upload Produk Baru\n------\nNama Produk: HNI Diapers Ukuran M (HNI Popok M)\nKategori: cosmetics\nHarga non member: 33000\nHarga member: 30000\nStok: 50\nPoin: 5\nBerat (gr): 500\nDeskripsi Produk: Fit di badan bayi tidak terlalu ketat, bahan lembut seperti kain, terdapat channelling system untuk mempercepat penyerapan urin.\n\nTersedia juga ukuran:\nS : < 5kg\nM : 5 - 10 kg\nL : 8 - 13 kg"
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "130ce74475e54d3",
+    "timeStamp": "2024-03-29T13:51:27.195Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "forms",
+      "args": "orms Upload Produk Baru\n------\nNama Produk: HNI Diapers Ukuran L (HNI Popok L)\nKategori: cosmetics\nHarga non member: 35000\nHarga member: 33000\nStok: 50\nPoin: 6\nBerat (gr): 500\nDeskripsi Produk: Fit di badan bayi tidak terlalu ketat, bahan lembut seperti kain, terdapat channelling system untuk mempercepat penyerapan urin.\n\nTersedia juga ukuran:\nS : < 5kg\nM : 5 - 10 kg\nL : 8 - 13 kg"
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "43f0c56fb70739c",
+    "timeStamp": "2024-03-29T13:56:43.316Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "mutate-products",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "6affa5eb9371c6b",
+    "timeStamp": "2024-03-29T13:58:58.750Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "list-produk",
+      "args": null
+    }
+  },
+  {
+    "level": "cmd",
+    "pid": "fa337608b3e439b",
+    "timeStamp": "2024-03-29T14:04:27.984Z",
+    "logs": {
+      "id": "6281329585825",
+      "username": "Rizky.",
+      "cmd": "mutate-products",
+      "args": null
+    }
   }
 ]
