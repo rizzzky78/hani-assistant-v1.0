@@ -3,7 +3,7 @@
 
 ## Chatbot HANI BC Cilacap 3
 
-Lightweight, Customizable WhatsApp Bot
+_Lightweight, Customizable WhatsApp Bot_
 
 <p align="center">
   <a href="https://github.com/LoL-Human"><img title="Author" src="https://img.shields.io/badge/Author-Rizky-blueviolet.svg?style=for-the-badge&logo=github" /></a>
@@ -59,19 +59,19 @@ Lightweight, Customizable WhatsApp Bot
 $ npm install
 ```
 
-- Install Nodemon globaly for development mode (optional)
+- Install Nodemon globaly for development mode (required for run in development mode)
 
 ```cmd
 $ npm install nodemon -g
 ```
 
-- Install PM2 globaly for run in production mode (optional)
+- Install PM2 globaly for run in production mode (required for run in production mode)
 
 ```cmd
 $ npm install -g pm2
 ```
 
-- Create a mongodb atlas account and clusters, [see at youtube](https://www.youtube.com/results?search_query=how+to+create+mongodb+atlas+account)
+- Create a **Mongodb Atlas** account and **Clusters**, [see at youtube](https://www.youtube.com/results?search_query=how+to+create+mongodb+atlas+account)
 - Open `.ENV file` in root aplication, heres the ENV fields look like
 
 ```env
@@ -161,7 +161,7 @@ $ node app.js
 
 ## PM2 Link (required for production mode)
 
-You can link PM2 using `public` and `private` key from official website [PM2 Keymetrics](https://pm2.keymetrics.io/)
+You can link PM2 using **public** and **private** key from official website [PM2 Keymetrics](https://pm2.keymetrics.io/)
 
 - Go to App [PM2 IO](https://app.pm2.io/)
 - Create buckets
@@ -193,6 +193,7 @@ The production run mode by default using cron restart interval set to 4 hours.
 Or, you can modify the app name and restart interval in `package.json`.
 
 Cronjob `--cron-restart=\"0 */4 * * *\"` is set to 4 hours, you can modify the number in `package.json` at app root.
+
 ```json
 "scripts": {
   "start": "node app.js --color",
@@ -202,8 +203,215 @@ Cronjob `--cron-restart=\"0 */4 * * *\"` is set to 4 hours, you can modify the n
 ```
 
 Using command to run in production mode, or by open `start production.sh` file in app root.
+
 ```cmd
 $ npm run prod
+```
+
+---
+
+## Command Module
+
+Chatbot has a _module.exports_ that contain module used as command module.
+
+You can find the `type.d.ts` at `./libs/builders/command/index.d.ts`.
+
+```ts
+import { WAMessage, WASocket } from "@adiwajshing/baileys";
+import { Serialize } from "@libs/utils/serialize";
+
+interface CommandObject {
+  client: WASocket;
+  message: WAMessage;
+  command: string;
+  prefix: string;
+  args: string[];
+  fullArgs: string;
+  msg: Serialize;
+}
+
+/**
+ * **Command Builder**
+ * @description Class command builder
+ */
+export class ICommand {
+  /**
+   * @description Command alias
+   * @example aliases: ['blabla', 'blabla']
+   */
+  aliases?: string[];
+
+  /**
+   * @required
+   * @description Command category (will use to build help command)
+   * @example category: 'downloader'
+   */
+  category: "admin" | "customer" | "forms";
+
+  /**
+   * @required
+   * @description Command description
+   * @example description: 'Something Downloader'
+   */
+  description: string;
+
+  /**
+   * @description Command permission
+   */
+  permission?: "admin" | "common";
+
+  /**
+   * @description If true and not group and not admin will send forbidden message
+   * @example adminOnly: true
+   */
+  adminOnly?: boolean;
+
+  /**
+   * @description If true and not group will send forbidden message
+   * @example groupOnly: true
+   */
+  groupOnly?: boolean;
+
+  /**
+   * @description If true and not private will send forbidden message
+   * @example privateOnly: true
+   */
+  privateOnly?: boolean;
+
+  /**
+   * @description Minimum argument, for example command without args will send required minimun args message
+   * @example minArgs: 1
+   */
+  minArgs?: number;
+
+  /**
+   * @description Expected argument
+   * @example expectedArgs: '<link1> <link2>'
+   */
+  expectedArgs?:
+    | "<ORD-ID-XXX>"
+    | "<TRX-ID-XXX>"
+    | "<ORD-ID-XXX VIA>"
+    | "<INV-ID-XXX>"
+    | "<QUERY # QTY>"
+    | "<QUERY>"
+    | "<QUERY FORMS>"
+    | "none";
+
+  typeArgs?: "query" | "forms" | "none";
+
+  /**
+   * @description Example use of the command
+   * @example example: '{prefix}{command} [args]'
+   */
+  exampleArgs?: string;
+
+  /**
+   * @description Send waiting message before execute the callback function
+   * @example waitMessage: true
+   */
+  waitMessage?: boolean | string;
+
+  /**
+   * @description Cooldown command
+   * @example cooldown: 10 * 1000 // 10 seconds
+   */
+  cooldown?: number;
+
+  /**
+   * **Callback Async Function**
+   * @required
+   * @description Callback to execute command function
+   * @example callback: async ({ msg }) => await msg.reply('Hello World!')
+   */
+  callback: (obj: CommandObject) => Promise<AwaitableMediaMessage>;
+}
+
+/**
+ * Wrap the CMD module
+ */
+interface CommandModule extends ICommand {}
+
+/**
+ * Typeof promises as pass to baileys WA Socket
+ */
+interface AwaitableMediaMessage extends any {}
+```
+
+## Command Module Usage Example
+
+The example use cases for CMD module. CMD module only accept in folder `./commands/...`.
+
+Example use cases for **Search Product** features.
+
+```ts
+const { commonMessage } = require("@config/messages");
+const { Moderation } = require("@controllers/admin");
+const { CustomerInterface } = require("@function/distributor-data");
+const { Converter } = require("@function/tools");
+const logger = require("@libs/utils/logger");
+
+/**
+ * @memberof Customer
+ * @type { import('@libs/builders/command').ICommand }
+ */
+module.exports = {
+  aliases: ["cari", "cariproduk"],
+  category: "customer",
+  permission: "common",
+  typeArgs: "query",
+  expectedArgs: "<QUERY>",
+  exampleArgs: "Andrographis",
+  description: `Mencari produk dan menampilkannya berdasarkan nama produk yang terdapat pada Katalog.`,
+  cooldown: 5 * 1000,
+  callback: async ({ client, msg, fullArgs }) => {
+    if (!fullArgs || fullArgs.length < 3) {
+      return msg.reply(commonMessage("invalid_QuerySearchProduct"));
+    } else {
+      client
+        .sendMessage(msg.from, {
+          text: commonMessage("waitMessage"),
+        })
+        .then(async () => {
+          await Moderation.searchProductByTitle(fullArgs)
+            .then(async ({ status, data: productData }) => {
+              if (status === "failed") {
+                return msg.reply(
+                  commonMessage("notFound_SearchedProductNotExist")(
+                    fullArgs.trim()
+                  )
+                );
+              }
+              const matchedProducts = productData.slice(0, 3);
+              client
+                .sendMessage(msg.from, {
+                  text: commonMessage("notification_ShowsSearchedProducts")(
+                    matchedProducts.length,
+                    fullArgs.trim()
+                  ),
+                })
+                .then(async () => {
+                  matchedProducts.forEach((v) => {
+                    setTimeout(async () => {
+                      const { caption, image } =
+                        CustomerInterface.displayProduct(v);
+                      return client.sendMessage(msg.from, {
+                        caption,
+                        image: await Converter.base64ToBufferConverter(image),
+                      });
+                    }, 2000);
+                  });
+                });
+            })
+            .catch((e) => {
+              logger.error(e);
+              console.log(e);
+              return msg.reply(commonMessage("errorMessage"));
+            });
+        });
+    }
+  },
+};
 ```
 
 ---
@@ -436,7 +644,7 @@ class Customer {
 
 ## Template Message
 
-You can find the locale text message template in `./config/messages/locale.js`, this contain msg object `commonAdminRegularMessage` and `commonCustomerRegularMessage`.
+You can find the locale text message template in `./config/messages/locale.js`, this contain msg object **commonAdminRegularMessage** and **commonCustomerRegularMessage**.
 
 The root of function message is on `./config/messages/index.js`.
 
@@ -468,11 +676,3 @@ function moderationMessage(messageKey) {
 ## End
 
 Special thanks to God, me, and my Computer :)
-
-```mermaid
-graph LR
-A[Square Rect] -- Link text --> B((Circle))
-A --> C(Round Rect)
-B --> D{Rhombus}
-C --> D
-```

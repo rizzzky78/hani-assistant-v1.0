@@ -14,16 +14,6 @@ interface CommandObject {
 /**
  * **Command Builder**
  * @description Class command builder
- * ```ts
- * export const moduleCmd: ICommand = {
- *   aliases: ["getsomething"],
- *   category: "somecategory",
- *   cooldown: 1000 * 5, // 5 seconds
- *   callback: async ({ client, msg, args, fullArgs }) => {
- *      // do something here
- *   },
- * };
- * ```
  */
 export class ICommand {
   /**
@@ -111,15 +101,6 @@ export class ICommand {
 
   /**
    * **Callback Async Function**
-   *
-   * Params `obj`:
-   * - client: `WASocket`
-   * - message: `WAMessage`
-   * - command: `string`
-   * - prefix: `string`
-   * - args: `string[]`
-   * - fullArgs: `string`
-   * - msg: `Serialize`
    * @required
    * @description Callback to execute command function
    * @example callback: async ({ msg }) => await msg.reply('Hello World!')
@@ -127,6 +108,12 @@ export class ICommand {
   callback: (obj: CommandObject) => Promise<AwaitableMediaMessage>;
 }
 
+/**
+ * Wrap the CMD module
+ */
 interface CommandModule extends ICommand {}
 
+/**
+ * Typeof promises as pass to baileys WA Socket
+ */
 interface AwaitableMediaMessage extends any {}
