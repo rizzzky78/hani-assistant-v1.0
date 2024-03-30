@@ -71,7 +71,8 @@ $ npm install nodemon -g
 $ npm install -g pm2
 ```
 
-- Create a **Mongodb Atlas** account and **Clusters**, [see at youtube](https://www.youtube.com/results?search_query=how+to+create+mongodb+atlas+account)
+- Create a **Mongodb Atlas** account and **Clusters**, and then get the URIs, [See at Youtube](https://www.youtube.com/results?search_query=how+to+create+mongodb+atlas+account)
+- Create a [Raja Ongkir](https://rajaongkir.com/) account and then get the **APIKEY**
 - Open `.ENV file` in root aplication, heres the ENV fields look like
 
 ```env

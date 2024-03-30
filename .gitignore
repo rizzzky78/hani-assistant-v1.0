@@ -9,3 +9,4 @@ database/*.db
 test/
 store/*.json
 assets/temp/
+.env
