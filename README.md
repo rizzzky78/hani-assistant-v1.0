@@ -120,8 +120,11 @@ ADMIN_2_PHONE = 6281329585825
 ADMIN_2_PHONE_ID = 6281329585825@s.whatsapp.net
 ADMIN_2_ROLE = Developer Chatbot
 
-# Group Metadata, a group id that can override forwarded orders instead sent to super admin.
-# Yet, you still need to modify changes at ./config/settings/index.js and the change super admin to this env var
+# Override forwarded orders data, selection only can be "GROUP" or "SUPERADMIN"
+# "GROUP" => orders and transactions are forwarded to group instead Super Admin
+# "SUPERADMIN" => orders and transactions are forwarded to Super Admin instead Group
+OVERRIDE_STATUS = SUPERADMIN
+# Group Metdata ID
 GROUP_ID_ONGOING_ORDERS = xxx@g.us.whatsapp.net
 GROUP_ID_TRANSACTION = xxx@g.us.whatsapp.net
 
@@ -158,6 +161,20 @@ $ node app.js
 - Login successful, go to the next step
 
 ---
+
+## Override Group Forwarded Orders and Transactions (optional)
+
+You can override chatbot to forward the orders and transactions data to Group instead to Super Admin.
+
+- Use command `get-group-id` to get the Group Id
+- Paste the the Group Id into `.env` file, can be **GROUP_ID_ONGOING_ORDERS** or **GROUP_ID_TRANSACTION** prefer what you want
+```env
+OVERRIDE_STATUS = GROUP
+GROUP_ID_ONGOING_ORDERS = example123@g.us.whatsapp.net
+GROUP_ID_TRANSACTION = example123@g.us.whatsapp.net
+```
+- Change the **OVERRIDE_STATUS** var **SUPERADMIN** in `.env` to var **GROUP**
+- Done!
 
 ## PM2 Link (required for production mode)
 

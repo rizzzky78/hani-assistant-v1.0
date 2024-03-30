@@ -70,6 +70,14 @@ export type Metadata = {
   organizationName: string;
   runMode: "DEVELOPMENT" | "PRODUCTION";
   /**
+   * Override the forwarded orders data to
+   */
+  overrideStatus: "GROUP" | "SUPERADMIN";
+  overrideGroupId: {
+    ongoingOrders: string;
+    ongoingTransactions: string
+  }
+  /**
    * Super Admin
    */
   superAdmin: {

@@ -79,7 +79,7 @@ module.exports = {
                         }
                         const msgSentId =
                           overrideStatus === "GROUP"
-                            ? overrideGroupId.ongoingOrders
+                            ? overrideGroupId.ongoingTransactions
                             : superAdmin.phoneId;
                         const { captionPayment, captionOrder } =
                           AdminInterface.mapForwardedCustomerPaymentProofDetails(
